@@ -47,17 +47,3 @@ echo "removed useless folders"
 
 exit 0
 
-# bash_profile
-# .bashrc
-# .emacs.d
-# .emacs.elpa
-# .emacs.d.persistent
-# .gitconfig
-# mac to /media/psf/Home
-
-# font stuff?
-
-# Remove the useless folders.
-# rm -rf Documents Music Pictures Public Templates Videos
-# echo "removed useless folders"
-
