@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # sudo make_sbcl.sh <version>
 # sudo make_sbcl.sh sbcl-1.1.3
