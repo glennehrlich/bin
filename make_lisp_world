@@ -1,0 +1,31 @@
+# /bin/bash
+
+# Switch to clbuild configuration for making sbcl.
+cd /opt
+./clbuild_sbcl
+
+cd /opt/clbuild
+
+# Get latest clbuild.
+./update_clbuild
+
+# Remove existing sbcl.
+rm -rf target trash/*
+
+# Update sbcl and existing projects.
+./clbuild update sbcl 
+./clbuild update --installed
+
+# Build sbcl.
+./clbuild compile-implementation sbcl
+
+# Build core.  Need to do it twice for some reason.
+./clbuild clean
+./clbuild dumpcore --installed
+# ./clbuild dumpcore --installed
+
+# Switch back to normal clbuild configuration for running sbcl.
+cd /opt
+./clbuild_normal
+
+
