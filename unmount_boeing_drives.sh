@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Unmount the boeing drives.
 

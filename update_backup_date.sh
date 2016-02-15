@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bsh
 
 date > /backup_date
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ln -s /media/psf/Home/r ~/r
 

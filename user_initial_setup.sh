@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This needs to be run as the user.
 
 # Link up to ~/r

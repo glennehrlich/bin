@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This needs to be run as root or from sudo
 
 # Remove the message of the day.
