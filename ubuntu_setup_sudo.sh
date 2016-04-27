@@ -24,7 +24,7 @@ apt-get install -y git
 apt-get install -y emacs-snapshot
 
 # Add other packages.
-apt-get install -y synaptic
+apt-get install -y synaptic cifs-utils
 
 exit 0
 
