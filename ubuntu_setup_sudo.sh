@@ -13,7 +13,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 # Set up additional apt repos.
-apt-add-repository -y ppa:git-core/ppa
+add-apt-repository -y ppa:git-core/ppa
 add-apt-repository -y ppa:ubuntu-elisp
 apt-get update
 
