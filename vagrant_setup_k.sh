@@ -71,11 +71,24 @@ fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
 
-# Copy my ssh keys.
+# Copy my ssh stuff to /home/vagrant.
+mkdir -p /home/vagrant/.ssh
 cp /home/vagrant/mac/.ssh/{config,gitlab*} /home/vagrant/.ssh
 chmod 700 /home/vagrant/.ssh
 chmod 600 /home/vagrant/.ssh/*
-chown -R vagrant:vagrant /home/vagrant.ssh
+chown -R vagrant:vagrant /home/vagrant/.ssh
+
+# Copy my ssh stuff to /root (so root scripts can access gitlab).
+mkdir -p /root/.ssh
+cp /home/vagrant/mac/.ssh/{config,gitlab*} /root/.ssh
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/*
+chown -R root:root /root/.ssh
+
+# Copy flake8 configuration file.
+mkdir -p /home/vagrant/.config
+ln -s /home/vagrant/mac/.config/flake8 /home/vagrant/.config/flake8
+chown -R vagrant:vagrant /home/vagrant/.config
 
 # Remove useless files.
 rm -f /home/vagrant/.bash_logout /home/vagrant/.profile
