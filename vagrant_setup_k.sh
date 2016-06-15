@@ -71,6 +71,9 @@ fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
 
+# ssh stuff - vagrant has open defects on ssh agent forwarding, so
+# until those are fully fixed, directly copy ssh keys to the guest.
+
 # Copy my ssh stuff to /home/vagrant.
 mkdir -p /home/vagrant/.ssh
 cp /home/vagrant/mac/.ssh/{config,gitlab*} /home/vagrant/.ssh
