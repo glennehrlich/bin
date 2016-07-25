@@ -58,12 +58,20 @@ if [ ! -d /home/vagrant/tmp ]; then
     echo "created /home/vagrant/tmp directory"
 fi
 
+# Save the original .bashrc
+mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
+chown vagrant:vagrant /home/vagrant/.bashrc.original
+
 # Link all of the directories and dot files.
 make_link /home/vagrant/mac/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
 make_link /home/vagrant/r/os/vagrant/k/.bashrc                  /home/vagrant/.bashrc
 make_link /home/vagrant/r/emacs.d                               /home/vagrant/.emacs.d
 make_link /home/vagrant/mac/.emacs.d.elpa                       /home/vagrant/.emacs.d.elpa
-make_link /home/vagrant/mac/.emacs.d.persistent                 /home/vagrant/.emacs.d.persistent
+
+# Create the emacs persistent directories.
+( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
+chown -R vagrant:vagrant /home/vagrant/.emacs.d.persistent
+rm -rf /home/vagrant/.emacs.d.persistent.old
 
 # Get adobe source code pro fonts.
 git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
