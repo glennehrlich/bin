@@ -21,7 +21,7 @@ apt-get update
 apt-get install -y git
 
 # Add latest emacs.
-apt-get install -y emacs-snapshot
+apt-get install -y emacs-snapshot emacs-snapshot-el
 
 # Add other packages.
 apt-get install -y synaptic cifs-utils
