@@ -8,4 +8,4 @@ echo
 echo "Remove Emacs.app from dock."
 
 echo
-echo "Drag /usr/local/Cellar/emacs/HEAD*/Emacs.app to dock."
+echo "Drag /usr/local/Cellar/emacs/HEAD*/Emacs.app to dock to the right of Safari icon."
