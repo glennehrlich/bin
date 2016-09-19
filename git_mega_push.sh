@@ -6,6 +6,10 @@ function git_push {
     echo "------------------------------------------------------------"
     echo "pushing $dir"
     cd $dir
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "error: $dir is not clean"
+        exit 1
+    fi
     git push origin --all
     git push origin --tags
 }
@@ -20,6 +24,7 @@ git_push /gitlab/kinetx_forks/python-wrapper-main
 git_push /gitlab/kinetx_glenn/design
 git_push /gitlab/kinetx_glenn/examples
 git_push /gitlab/kinetx_glenn/python
+git_push /gitlab/kinetx_glenn/sims
 
 # /gitlab/kinext_python
 git_push /gitlab/kinetx_python/k
@@ -27,3 +32,4 @@ git_push /gitlab/kinetx_python/k_releases
 
 echo "------------------------------------------------------------"
 echo "finished"
+exit 0
