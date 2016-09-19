@@ -1,6 +1,6 @@
 #!/bin/bash
 
-brew reinstall emacs --HEAD --with-cocoa --with-gnutls --with-imagemagick
+brew reinstall emacs --HEAD --with-cocoa --with-gnutls --with-imagemagick --with-mailutils --with-modules
 
 open /usr/local/Cellar/emacs
 
