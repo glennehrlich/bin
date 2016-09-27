@@ -63,10 +63,11 @@ mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
 chown vagrant:vagrant /home/vagrant/.bashrc.original
 
 # Link all of the directories and dot files.
-make_link /home/vagrant/mac/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
-make_link /home/vagrant/r/os/vagrant/k/.bashrc                  /home/vagrant/.bashrc
-make_link /home/vagrant/r/emacs.d                               /home/vagrant/.emacs.d
 make_link /home/vagrant/mac/.emacs.d.elpa                       /home/vagrant/.emacs.d.elpa
+make_link /home/vagrant/mac/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
+make_link /home/vagrant/r/emacs.d                               /home/vagrant/.emacs.d
+make_link /home/vagrant/r/git/gitconfig                         /home/vagrant/.gitconfig
+make_link /home/vagrant/r/os/vagrant/k/.bashrc                  /home/vagrant/.bashrc
 
 # Create the emacs persistent directories.
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
