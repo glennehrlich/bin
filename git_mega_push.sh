@@ -30,6 +30,9 @@ git_push /gitlab/kinetx_glenn/sims
 git_push /gitlab/kinetx_python/k
 git_push /gitlab/kinetx_python/k_releases
 
+# Personal repos on github
+git_push ~/.emacs.d
+
 echo "------------------------------------------------------------"
 echo "finished"
 exit 0
