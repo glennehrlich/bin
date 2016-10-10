@@ -85,7 +85,7 @@ echo "added adobe source code pro font"
 
 # Copy my ssh stuff to /home/vagrant.
 mkdir -p /home/vagrant/.ssh
-cp /home/vagrant/mac/.ssh/{config,gitlab*} /home/vagrant/.ssh
+cp /home/vagrant/mac/.ssh/{config,github*,gitlab*} /home/vagrant/.ssh
 chmod 700 /home/vagrant/.ssh
 chmod 600 /home/vagrant/.ssh/*
 chown -R vagrant:vagrant /home/vagrant/.ssh
