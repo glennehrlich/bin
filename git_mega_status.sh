@@ -5,8 +5,8 @@ function git_status {
 
     echo "------------------------------------------------------------"
     echo "checking $dir"
-    git rev-parse --abbrev-ref HEAD # show current checked out branch
     cd $dir
+    git rev-parse --abbrev-ref HEAD # show current checked out branch
     if [[ -n $(git status --porcelain) ]]; then
         echo "error: $dir is not clean"
     fi
