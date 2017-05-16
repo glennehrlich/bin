@@ -47,10 +47,9 @@ for i in $(brew cask outdated --quiet); do
     echo "------------------------------------------------------------"
     echo "updating $i"
     renew_sudo
-    brew uninstall --force $i
     brew cask fetch $i
     renew_sudo
-    brew cask install $i
+    brew cask install --force $i
     echo
 done    
 
