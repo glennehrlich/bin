@@ -1,13 +1,7 @@
 #!/bin/bash
 
 echo "brewing with emacs release"
-brew uninstall emacs
-brew install emacs --with-cocoa --with-gnutls --with-imagemagick --with-mailutils --with-modules
-
-open /usr/local/Cellar/emacs
-
-echo
-echo "Remove Emacs.app from dock."
-
-echo
-echo "Drag /usr/local/Cellar/emacs/*/Emacs.app to dock to the right of Safari icon."
+brew uninstall --force emacs
+brew install emacs --with-cocoa --with-gnutls --with-imagemagick@6 --with-librsvg --with-mailutils --with-modules
+dockutil --remove Emacs
+dockutil --add /usr/local/Cellar/emacs/HEAD*/Emacs.app --after Safari
