@@ -46,7 +46,6 @@ cd ~/.emacs.d ; make update_elpa ; make clean all ; make clean all ; make clean 
 for i in $(brew cask outdated --quiet); do 
     echo "------------------------------------------------------------"
     echo "updating $i"
-    renew_sudo
     brew cask fetch $i
     renew_sudo
     brew cask install --force $i
