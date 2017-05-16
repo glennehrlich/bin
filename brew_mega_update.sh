@@ -24,7 +24,7 @@ fi
 ask_sudo
 
 echo "------------------------------------------------------------"
-echo "pruining brew"
+echo "pruning brew"
 brew prune
 
 echo "------------------------------------------------------------"
@@ -37,7 +37,10 @@ brew upgrade
 
 echo "------------------------------------------------------------"
 echo "updating emacs"
-brew_emacs_head.sh
+brew uninstall --force emacs
+brew install emacs --HEAD --with-cocoa --with-gnutls --with-imagemagick@6 --with-librsvg --with-mailutils --with-modules
+dockutil --remove Emacs
+dockutil --add /usr/local/Cellar/emacs/HEAD*/Emacs.app --after Safari
 cd ~/.emacs.d ; make update_elpa ; make clean all ; make clean all ; make clean all
 
 for i in $(brew cask outdated --quiet); do 
