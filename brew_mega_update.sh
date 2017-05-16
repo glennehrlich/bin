@@ -17,7 +17,7 @@ renew_sudo() {
 }
 
 if pstree -p $PPID | grep -v grep | grep -q -i emacs; then
-    echo "error: you can not run this script in a shell within emacs (because emacs will be removed and installed)."
+    echo "error: you can not run this script from within emacs (because emacs will be removed and installed)."
     exit 1
 fi
 
@@ -37,24 +37,17 @@ brew upgrade
 
 echo "------------------------------------------------------------"
 echo "updating emacs"
-brew uninstall --force emacs
-brew install emacs --HEAD --with-cocoa --with-gnutls --with-imagemagick@6 --with-librsvg --with-mailutils --with-modules
-dockutil --remove Emacs
-dockutil --add /usr/local/Cellar/emacs/HEAD*/Emacs.app --after Safari
+brew_emacs_head.sh
 cd ~/.emacs.d ; make update_elpa ; make clean all ; make clean all ; make clean all
-
-for i in $(brew cask outdated --quiet); do 
-    echo "------------------------------------------------------------"
-    echo "fetching $i"
-    brew cask fetch $i
-    echo
-done    
 
 for i in $(brew cask outdated --quiet); do 
     echo "------------------------------------------------------------"
     echo "updating $i"
     renew_sudo
-    brew cask install $i --force
+    brew uninstall --force $i
+    brew cask fetch $i
+    renew_sudo
+    brew cask install $i
     echo
 done    
 
