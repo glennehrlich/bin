@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source git_mega_repos.sh
+
 function git_push {
     local dir=$1
 
@@ -14,24 +16,9 @@ function git_push {
     git push origin --tags
 }
 
-# /gitlab/kinetx_forks
-git_push /gitlab/kinetx_forks/czml
-git_push /gitlab/kinetx_forks/mice
-git_push /gitlab/kinetx_forks/pypdevs
-git_push /gitlab/kinetx_forks/python-wrapper-main
-
-# /gitlab/kinetx_glenn
-git_push /gitlab/kinetx_glenn/design
-git_push /gitlab/kinetx_glenn/examples
-git_push /gitlab/kinetx_glenn/python
-git_push /gitlab/kinetx_glenn/sims
-
-# /gitlab/kinext_python
-git_push /gitlab/kinetx_python/k
-git_push /gitlab/kinetx_python/k_releases
-
-# Personal repos on github
-git_push ~/.emacs.d
+for repo in ${GIT_REPOS[@]}; do
+    git_push $repo
+done
 
 echo "------------------------------------------------------------"
 echo "finished"
