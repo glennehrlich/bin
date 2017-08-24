@@ -68,6 +68,7 @@ make_link /home/vagrant/mac/r/os/linux/home/glenn/.bash_profile /home/vagrant/.b
 make_link /home/vagrant/r/emacs.d                               /home/vagrant/.emacs.d
 make_link /home/vagrant/r/git/gitconfig                         /home/vagrant/.gitconfig
 make_link /home/vagrant/r/os/vagrant/k/.bashrc                  /home/vagrant/.bashrc
+make_link /home/vagrant/r/os/vagrant/k/.ipython                 /home/vagrant/.ipython
 make_link /home/vagrant/r/os/vagrant/k/.spacetrack.ini          /home/vagrant/.spacetrack.ini
 
 # Create the emacs persistent directories.
