@@ -1,4 +1,7 @@
 GIT_REPOS=(                                   \
+  ~/gitlab/kinetx_forks/mice                  \
+  ~/gitlab/kinetx_forks/python-wrapper-main   \
+                                              \
   ~/gitlab/kinetx_julia/julia_devs            \
                                               \
   ~/gitlab/kinetx_oneweb/notes                \

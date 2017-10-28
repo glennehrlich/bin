@@ -1,8 +1,6 @@
 GIT_REPOS=(                                 \
   ~/gitlab/kinetx_forks/czml                \
-  ~/gitlab/kinetx_forks/mice                \
   ~/gitlab/kinetx_forks/pypdevs             \
-  ~/gitlab/kinetx_forks/python-wrapper-main \
                                             \
   ~/gitlab/kinetx_glenn/design              \
   ~/gitlab/kinetx_glenn/examples            \
