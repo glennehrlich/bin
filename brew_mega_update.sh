@@ -37,13 +37,7 @@ brew upgrade
 
 echo "------------------------------------------------------------"
 echo "updating emacs"
-brew uninstall --force emacs
-brew install emacs --HEAD --with-cocoa --with-gnutls --with-imagemagick@6 --with-librsvg --with-mailutils --with-modules
-dockutil --remove Emacs
-dockutil --add /usr/local/Cellar/emacs/HEAD*/Emacs.app --after Safari
-cd ~/.emacs.d
-make update_elpa
-make clean all
+brew_emacs_head.sh
 
 for i in $(brew cask outdated --quiet); do 
     echo "------------------------------------------------------------"
