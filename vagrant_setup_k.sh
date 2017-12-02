@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Setup for vagrant k environment in /k.
-
-# This script assumes the following synced folders:
-# config.vm.synced_folder "/Users/glenn",   "/home/vagrant/mac"
-# config.vm.synced_folder "/Users/glenn/r", "/home/vagrant/r"
+# Setup vagrant environment.
 
 # make_link source destination.
 function make_link {
@@ -51,6 +47,18 @@ if [ ! -e /usr/bin/git ]; then
     exit 1
 fi
 
+# Check that /home/vagrant/host exists.
+if [ ! -e /home/vagrant/host ]; then
+    echo "error: /home/vagrant/host not present"
+    exit 1
+fi
+
+# Check that /home/vagrant/r exists.
+if [ ! -e /home/vagrant/r ]; then
+    echo "error: /home/vagrant/r not present"
+    exit 1
+fi
+
 # Make ~/tmp.
 if [ ! -d /home/vagrant/tmp ]; then
     mkdir /home/vagrant/tmp
@@ -63,13 +71,13 @@ mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
 chown vagrant:vagrant /home/vagrant/.bashrc.original
 
 # Link all of the directories and dot files.
-make_link /home/vagrant/mac/.emacs.d.elpa                       /home/vagrant/.emacs.d.elpa
-make_link /home/vagrant/mac/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
-make_link /home/vagrant/r/emacs.d                               /home/vagrant/.emacs.d
-make_link /home/vagrant/r/git/gitconfig                         /home/vagrant/.gitconfig
-make_link /home/vagrant/r/os/vagrant/k/.bashrc                  /home/vagrant/.bashrc
-make_link /home/vagrant/r/os/vagrant/k/.ipython                 /home/vagrant/.ipython
-make_link /home/vagrant/r/os/vagrant/k/.spacetrack.ini          /home/vagrant/.spacetrack.ini
+make_link /home/vagrant/host/.emacs.d.elpa                       /home/vagrant/.emacs.d.elpa
+make_link /home/vagrant/host/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
+make_link /home/vagrant/r/emacs.d                                /home/vagrant/.emacs.d
+make_link /home/vagrant/r/git/gitconfig                          /home/vagrant/.gitconfig
+make_link /home/vagrant/r/os/vagrant/k/.bashrc                   /home/vagrant/.bashrc
+make_link /home/vagrant/r/os/vagrant/k/.ipython                  /home/vagrant/.ipython
+make_link /home/vagrant/r/os/vagrant/k/.spacetrack.ini           /home/vagrant/.spacetrack.ini
 
 # Create the emacs persistent directories.
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
@@ -82,26 +90,9 @@ fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
 
-# ssh stuff - vagrant has open defects on ssh agent forwarding, so
-# until those are fully fixed, directly copy ssh keys to the guest.
-
-# Copy my ssh stuff to /home/vagrant.
-mkdir -p /home/vagrant/.ssh
-cp /home/vagrant/mac/.ssh/{config,github*,gitlab*} /home/vagrant/.ssh
-chmod 700 /home/vagrant/.ssh
-chmod 600 /home/vagrant/.ssh/*
-chown -R vagrant:vagrant /home/vagrant/.ssh
-
-# Copy my ssh stuff to /root (so root scripts can access gitlab).
-mkdir -p /root/.ssh
-cp /home/vagrant/mac/.ssh/{config,gitlab*} /root/.ssh
-chmod 700 /root/.ssh
-chmod 600 /root/.ssh/*
-chown -R root:root /root/.ssh
-
 # Copy flake8 configuration file.
 mkdir -p /home/vagrant/.config
-ln -s /home/vagrant/mac/.config/flake8 /home/vagrant/.config/flake8
+ln -s /home/vagrant/host/.config/flake8 /home/vagrant/.config/flake8
 chown -R vagrant:vagrant /home/vagrant/.config
 
 # Remove useless files.
