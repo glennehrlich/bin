@@ -9,6 +9,7 @@ GIT_REPOS=(                                   \
   ~/gitlab/kinetx_glenn/resources             \
   ~/gitlab/kinetx_glenn/sample_python_project \
   ~/gitlab/kinetx_glenn/sims                  \
+  ~/gitlab/kinetx_glenn/spacetrack            \
   ~/gitlab/kinetx_glenn/util                  \
                                               \
   ~/gitlab/kinetx_glenn_private/notes         \
