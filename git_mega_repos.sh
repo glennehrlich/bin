@@ -1,4 +1,6 @@
 GIT_REPOS=(                                   \
+  ~/gitlab/kinetx_bams/notes                  \
+                                              \
   ~/gitlab/kinetx_forks/czml                  \
   ~/gitlab/kinetx_forks/PythonPDEVS           \
                                               \
@@ -18,6 +20,7 @@ GIT_REPOS=(                                   \
   ~/gitlab/kinetx_python/k_releases           \
                                               \
   ~/gitlab/kinetx_virtual_machines/c          \
+  ~/gitlab/kinetx_virtual_machines/centos     \
   ~/gitlab/kinetx_virtual_machines/g          \
   ~/gitlab/kinetx_virtual_machines/generic    \
   ~/gitlab/kinetx_virtual_machines/kai2       \
