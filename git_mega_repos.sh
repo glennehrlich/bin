@@ -1,5 +1,6 @@
 GIT_REPOS=(                                   \
   ~/gitlab/kinetx_bams/bar                    \
+  ~/gitlab/kinetx_bams/installer              \
   ~/gitlab/kinetx_bams/notes                  \
                                               \
   ~/gitlab/kinetx_forks/czml                  \
@@ -22,9 +23,12 @@ GIT_REPOS=(                                   \
                                               \
   ~/gitlab/kinetx_studies/vulcan              \
                                               \
+  ~/gitlab/kinetx_virtual_machines/bams       \
+  ~/gitlab/kinetx_virtual_machines/bams_build \
   ~/gitlab/kinetx_virtual_machines/c          \
   ~/gitlab/kinetx_virtual_machines/centos     \
   ~/gitlab/kinetx_virtual_machines/g          \
+  ~/gitlab/kinetx_virtual_machines/j          \
   ~/gitlab/kinetx_virtual_machines/generic    \
   ~/gitlab/kinetx_virtual_machines/kai2       \
   ~/gitlab/kinetx_virtual_machines/kai3       \

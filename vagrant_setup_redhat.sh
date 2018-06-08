@@ -83,7 +83,8 @@ chown -R vagrant:vagrant /home/vagrant/.emacs.d.persistent
 rm -rf /home/vagrant/.emacs.d.persistent.old
 
 # Get adobe source code pro fonts.
-git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
+# git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
+git clone --depth 1 --branch release git@github.com:adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
 fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
