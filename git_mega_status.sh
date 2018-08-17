@@ -33,7 +33,7 @@ if [ $status == 0 ]; then
 else
     echo "the following repos are not clean:"
     for r in ${unclean_repos[@]}; do
-        echo "  $r"
+        echo "$r"
     done
 fi
 exit 0
