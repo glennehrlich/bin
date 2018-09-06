@@ -1,5 +1,7 @@
 GIT_REPOS=(                                    \
   ~/gitlab/kinetx_bams/bar                     \
+  ~/gitlab/kinetx_bams/bar_manual_load         \
+  ~/gitlab/kinetx_bams/bar_server              \
   ~/gitlab/kinetx_bams/installer               \
   ~/gitlab/kinetx_bams/kickstart               \
   ~/gitlab/kinetx_bams/notes                   \
