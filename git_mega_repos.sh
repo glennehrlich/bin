@@ -1,12 +1,8 @@
 GIT_REPOS=(                                                 \
   ~/gitlab/kinetx_bams/bams                                 \
   ~/gitlab/kinetx_bams/bar                                  \
-  ~/gitlab/kinetx_bams/bar_manual_load                      \
-  ~/gitlab/kinetx_bams/bar_server                           \
-  ~/gitlab/kinetx_bams/installer                            \
   ~/gitlab/kinetx_bams/kickstart                            \
   ~/gitlab/kinetx_bams/notes                                \
-  ~/gitlab/kinetx_bams/sdramBit                             \
   ~/gitlab/kinetx_bams/virtual_machines/bams_build          \
   ~/gitlab/kinetx_bams/virtual_machines/bams_server         \
   ~/gitlab/kinetx_bams/virtual_machines/bar                 \
