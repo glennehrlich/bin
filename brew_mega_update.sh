@@ -51,7 +51,6 @@ done
 echo "------------------------------------------------------------"
 echo "cleaning up brew"
 brew cleanup
-brew cask cleanup
 
 echo "------------------------------------------------------------"
 echo "finished"
