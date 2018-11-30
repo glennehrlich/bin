@@ -17,12 +17,15 @@ function git_status {
     fi
 }
 
+exit_code=0
+
 status=0
 unclean_repos=()
 for repo in ${GIT_REPOS[@]}; do
     if ! git_status $repo; then
         status=1
         unclean_repos+=($repo)
+        exit_code=1
     fi
 done
 
@@ -36,4 +39,5 @@ else
         echo "$r"
     done
 fi
-exit 0
+
+exit $exit_code
