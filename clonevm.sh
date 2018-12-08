@@ -34,6 +34,7 @@ if VBoxManage showvminfo "$NEW_VM" > /dev/null 2>&1; then
 
     # Poweroff the vm.
     VBoxManage controlvm "$NEW_VM" poweroff > /dev/null 2>&1
+    sleep 5
 
     # Delete the vm.
     if ! VBoxManage unregistervm "$NEW_VM" --delete > /dev/null 2>&1; then
