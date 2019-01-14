@@ -22,7 +22,7 @@ if [ -z "$NEW_VM" ]; then
 fi
 
 # Test if ORIGINAL_VM exists.
-if ! VBoxManage showvminfo "$NEW_VM" > /dev/null 2>&1; then
+if ! VBoxManage showvminfo "$ORIGINAL_VM" > /dev/null 2>&1; then
     echo "error: original vm \"$ORIGINAL_VM\" does not exist"
     echo "clonevm.sh ORIGINAL_VM NEW_VM"
     exit 1
