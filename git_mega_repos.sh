@@ -1,6 +1,5 @@
 GIT_REPOS=(                                                 \
   ~/gitlab/kinetx_bams/bams                                 \
-  ~/gitlab/kinetx_bams/kickstart                            \
   ~/gitlab/kinetx_bams/notes                                \
   ~/gitlab/kinetx_bams/virtual_machines/bams_build          \
   ~/gitlab/kinetx_bams/virtual_machines/bams_server         \
