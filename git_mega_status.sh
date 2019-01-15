@@ -34,7 +34,7 @@ echo "------------------------------------------------------------"
 if [ $status == 0 ]; then
     echo "all repos are clean"
 else
-    echo "the following repos are not clean:"
+    echo "The following repos are not clean:"
     for r in ${unclean_repos[@]}; do
         echo "$r"
     done
