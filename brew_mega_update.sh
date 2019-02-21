@@ -24,8 +24,8 @@ fi
 ask_sudo
 
 echo "------------------------------------------------------------"
-echo "pruning brew"
-brew prune
+echo "cleaning up brew"
+brew cleanup
 
 echo "------------------------------------------------------------"
 echo "updating brew"
