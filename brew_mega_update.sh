@@ -37,7 +37,7 @@ brew upgrade
 
 echo "------------------------------------------------------------"
 echo "updating emacs"
-brew_emacs_head.sh
+brew_emacs.sh
 
 for i in $(brew cask outdated --quiet); do 
     echo "------------------------------------------------------------"
