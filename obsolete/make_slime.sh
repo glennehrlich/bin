@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # cd ~/r/cots
 # cvs -d :pserver:anonymous:anonymous@common-lisp.net:/project/slime/cvsroot co slime

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 rm -rf ~/r
 ln -s /media/psf/Home/r ~/r

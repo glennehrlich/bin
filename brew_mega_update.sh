@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ask_sudo() {
   echo "This script needs the sudo password."

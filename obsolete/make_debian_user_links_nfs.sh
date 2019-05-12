@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Assumes the following nfs mounts
 #   mac:/Users/glenn   /Users/glenn

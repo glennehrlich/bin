@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # tvnamer_castle PATTERN
 # tvnamer *.mkv

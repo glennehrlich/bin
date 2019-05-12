@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script runs the java interpreter, but if any specified jar
 # files are found, it will prevent that jar from displaying a splash

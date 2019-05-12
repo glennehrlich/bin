@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Can only run in mac.
 if [ "$(uname)" != "Darwin" ]; then

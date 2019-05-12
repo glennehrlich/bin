@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # make_master_sbcl.sh VERSION
 # make_master_sbcl.sh sbcl-1.1.2

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # copy_disk.sh SOURCE_DIR DEST_DIR
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Switch to clbuild configuration for making sbcl.
 cd /opt

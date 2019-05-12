@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # clonevm.sh ORIGINAL_VM NEW_VM
 #

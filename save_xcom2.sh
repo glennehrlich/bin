@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ts=`date  "+%Y-%m-%d_%H%M%S"`
 

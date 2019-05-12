@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "brewing with emacs-plus HEAD"
 brew uninstall --force emacs-plus
