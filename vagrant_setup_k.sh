@@ -7,12 +7,12 @@ function make_link {
     local source=$1
     local destination=$2
 
-    if [ -L $destination ]; then
+    if [[ -L $destination ]]; then
         rm $destination
         echo "removed symbolic link $destination"
     fi
 
-    if [ -e $destination ]; then
+    if [[ -e $destination ]]; then
         rm -rf $destination
         echo "removed file $destination"
     fi
@@ -20,7 +20,7 @@ function make_link {
     ln -s $source $destination
     chown -h vagrant:vagrant $destination
 
-    if [ -L $destination ]; then
+    if [[ -L $destination ]]; then
         echo "created symbolic link $destination to $source"
     else
         echo "error: could not create symbolic link $destination to $source"
@@ -30,37 +30,37 @@ function make_link {
 
 # This should be run only as root from the vagrant provisioning
 # process.
-if [ "$(whoami)" != "root" ]; then
+if [[ "$(whoami)" != "root" ]]; then
     echo "error: must run with root from vagrant provisioning"
     exit 1
 fi
 
 # Can only run in linux.
-if [ "$(uname)" == "Darwin" ]; then
+if [[ "$(uname)" == "Darwin" ]]; then
     echo "error: can not run script in Mac OS X"
     exit 1
 fi
 
 # Check that git exists.
-if [ ! -e /usr/bin/git ]; then
+if [[ ! -e /usr/bin/git ]]; then
     echo "error: git not present"
     exit 1
 fi
 
 # Check that /home/vagrant/host exists.
-if [ ! -e /home/vagrant/host ]; then
+if [[ ! -e /home/vagrant/host ]]; then
     echo "error: /home/vagrant/host not present"
     exit 1
 fi
 
 # Check that /home/vagrant/r exists.
-if [ ! -e /home/vagrant/r ]; then
+if [[ ! -e /home/vagrant/r ]]; then
     echo "error: /home/vagrant/r not present"
     exit 1
 fi
 
 # Make ~/tmp.
-if [ ! -d /home/vagrant/tmp ]; then
+if [[ ! -d /home/vagrant/tmp ]]; then
     mkdir /home/vagrant/tmp
     chown vagrant:vagrant /home/vagrant/tmp
     echo "created /home/vagrant/tmp directory"
@@ -103,5 +103,33 @@ echo "removed useless files"
 rm -rf Documents Music Pictures Public Templates Videos
 echo "removed useless folders"
 
-exit 0
+# Visual studio code setup.
+if [[ -e /snap/bin/code ]]; then
+    su -l vagrant -c "code --install-extension tuttieee.emacs-mcx"
+    su -l vagrant -c "code --install-extension VisualStudioExptTeam.vscodeintellicode"
+    mkdir -p /home/vagrant/.config/Code/User
+    cp /home/vagrant/r/os/common/home/glenn/.config/Code/User/* /home/vagrant/.config/Code/User
+    chown -R vagrant:vagrant /home/vagrant/.config
+    echo "set up visual studio code"
+fi
 
+# Visual studio code insiders setup.
+if [[ -e /snap/bin/code-insiders ]]; then
+    su -l vagrant -c "code-insiders --install-extension tuttieee.emacs-mcx"
+    su -l vagrant -c "code-insiders --install-extension VisualStudioExptTeam.vscodeintellicode"
+    mkdir -p '/home/vagrant/.config/Code - Insiders/User'
+    cp /home/vagrant/r/os/common/home/glenn/.config/Code/User/* '/home/vagrant/.config/Code - Insiders/User'
+    chown -R vagrant:vagrant /home/vagrant/.config
+    echo "set up visual studio code insiders"
+fi
+
+# Update settings if on a desktop.
+# Dump settings with:
+# $ dconf dump / > /home/vagrant/r/os/linux/home/glenn/dconf_settings.txt
+# Do not edit the settings as the load must be a complete set of settings.
+if dpkg -l ubuntu-desktop > /dev/null 2>&1; then
+    su -l vagrant -c "dconf load / < /home/vagrant/r/os/linux/home/glenn/dconf_settings.txt"
+    echo "set up dconf settings"
+fi
+
+exit 0
