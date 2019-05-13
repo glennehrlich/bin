@@ -53,12 +53,6 @@ if [[ ! -e /home/vagrant/host ]]; then
     exit 1
 fi
 
-# Check that /home/vagrant/r exists.
-if [[ ! -e /home/vagrant/r ]]; then
-    echo "error: /home/vagrant/r not present"
-    exit 1
-fi
-
 # Make ~/tmp.
 if [[ ! -d /home/vagrant/tmp ]]; then
     mkdir /home/vagrant/tmp
@@ -71,13 +65,12 @@ mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
 chown vagrant:vagrant /home/vagrant/.bashrc.original
 
 # Link all of the directories and dot files.
-make_link /home/vagrant/host/.emacs.d.elpa                       /home/vagrant/.emacs.d.elpa
-make_link /home/vagrant/host/r/os/linux/home/glenn/.bash_profile /home/vagrant/.bash_profile
-make_link /home/vagrant/r/emacs.d                                /home/vagrant/.emacs.d
-make_link /home/vagrant/r/git/gitconfig                          /home/vagrant/.gitconfig
-make_link /home/vagrant/r/os/vagrant/k/.bashrc                   /home/vagrant/.bashrc
-make_link /home/vagrant/r/os/vagrant/k/.ipython                  /home/vagrant/.ipython
-make_link /home/vagrant/r/os/vagrant/k/.spacetrack.ini           /home/vagrant/.spacetrack.ini
+make_link /home/vagrant/host/.emacs.d.elpa                         /home/vagrant/.emacs.d.elpa
+make_link /home/vagrant/host/dot-fles/ubuntu-vagrant/.bash_profile /home/vagrant/.bash_profile
+make_link /home/vagrant/r/emacs.d                                  /home/vagrant/.emacs.d
+make_link /home/vagrant/host/dot-files/.gitconfig                  /home/vagrant/.gitconfig
+make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bashrc      /home/vagrant/.bashrc
+make_link /home/vagrant/host/dot-files/.spacetrack.ini             /home/vagrant/.spacetrack.ini
 
 # Create the emacs persistent directories.
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
@@ -92,7 +85,7 @@ echo "added adobe source code pro font"
 
 # Copy flake8 configuration file.
 mkdir -p /home/vagrant/.config
-ln -s /home/vagrant/host/.config/flake8 /home/vagrant/.config/flake8
+ln -s /home/vagrant/host/dot-files/flake8 /home/vagrant/.config/flake8
 chown -R vagrant:vagrant /home/vagrant/.config
 
 # Remove useless files.
@@ -107,9 +100,6 @@ echo "removed useless folders"
 if [[ -e /snap/bin/code ]]; then
     su -l vagrant -c "code --install-extension tuttieee.emacs-mcx"
     su -l vagrant -c "code --install-extension VisualStudioExptTeam.vscodeintellicode"
-    mkdir -p /home/vagrant/.config/Code/User
-    cp /home/vagrant/r/os/common/home/glenn/.config/Code/User/* /home/vagrant/.config/Code/User
-    chown -R vagrant:vagrant /home/vagrant/.config
     echo "set up visual studio code"
 fi
 
@@ -117,19 +107,7 @@ fi
 if [[ -e /snap/bin/code-insiders ]]; then
     su -l vagrant -c "code-insiders --install-extension tuttieee.emacs-mcx"
     su -l vagrant -c "code-insiders --install-extension VisualStudioExptTeam.vscodeintellicode"
-    mkdir -p '/home/vagrant/.config/Code - Insiders/User'
-    cp /home/vagrant/r/os/common/home/glenn/.config/Code/User/* '/home/vagrant/.config/Code - Insiders/User'
-    chown -R vagrant:vagrant /home/vagrant/.config
     echo "set up visual studio code insiders"
-fi
-
-# Update settings if on a desktop.
-# Dump settings with:
-# $ dconf dump / > /home/vagrant/r/os/linux/home/glenn/dconf_settings.txt
-# Do not edit the settings as the load must be a complete set of settings.
-if dpkg -l ubuntu-desktop > /dev/null 2>&1; then
-    su -l vagrant -c "dconf load / < /home/vagrant/r/os/linux/home/glenn/dconf_settings.txt"
-    echo "set up dconf settings"
 fi
 
 exit 0
