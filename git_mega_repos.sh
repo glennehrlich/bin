@@ -21,4 +21,8 @@ GIT_REPOS=(                                                  \
   ~/gitlab/kinetx_simulation/util                            \
                                                              \
   ~/.emacs.d                                                 \
+  ~/.ssh                                                     \
+  ~/bin                                                      \
+  ~/notes                                                    \
+  ~/notes-personal                                           \
 )
