@@ -25,4 +25,5 @@ GIT_REPOS=(                                                  \
   ~/bin                                                      \
   ~/notes                                                    \
   ~/notes-personal                                           \
+  ~/todo                                                     \
 )
