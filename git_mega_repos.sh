@@ -23,6 +23,7 @@ GIT_REPOS=(                                                  \
   ~/.emacs.d                                                 \
   ~/.ssh                                                     \
   ~/bin                                                      \
+  ~/dot-files                                                \
   ~/notes                                                    \
   ~/notes-personal                                           \
   ~/todo                                                     \
