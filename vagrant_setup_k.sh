@@ -67,10 +67,11 @@ chown vagrant:vagrant /home/vagrant/.bashrc.original
 # Link all of the directories and dot files.
 make_link /home/vagrant/host/.emacs.d                               /home/vagrant/.emacs.d
 make_link /home/vagrant/host/.emacs.d.elpa                          /home/vagrant/.emacs.d.elpa
-make_link /home/vagrant/host/dot-files/.gitconfig                   /home/vagrant/.gitconfig
 make_link /home/vagrant/host/dot-files/.spacetrack.ini              /home/vagrant/.spacetrack.ini
-make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bashrc       /home/vagrant/.bashrc
+make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.gitconfig    /home/vagrant/.gitconfig
 make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bash_profile /home/vagrant/.bash_profile
+make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bashrc       /home/vagrant/.bashrc
+
 
 # Create the emacs persistent directories.
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
