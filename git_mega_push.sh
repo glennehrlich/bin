@@ -23,9 +23,7 @@ for gr in ${GIT_REPOS[@]}; do
     find $gr -name .git -type d -prune | while read dir; do
         repo=$(dirname $dir)
         cd $repo
-        if [[ $(git status --porcelain) ]]; then
-            git_push $repo
-        fi
+        git_push $repo
     done
 done
 
