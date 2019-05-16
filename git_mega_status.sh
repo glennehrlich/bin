@@ -23,7 +23,6 @@ function git_status {
 exit_code=0
 
 status=0
-declare -x unclean_repos
 unclean_repos=()
 for gr in ${GIT_REPOS[@]}; do
     find $gr -name .git -type d -prune | while read dir; do

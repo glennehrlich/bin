@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Necessary to run stuff in pipe in current process (while read dir; do)
+shopt -s lastpipe
+
 source git_mega_repos.sh
 
 function git_push {
@@ -16,8 +19,14 @@ function git_push {
     git push origin --tags
 }
 
-for repo in ${GIT_REPOS[@]}; do
-    git_push $repo
+for gr in ${GIT_REPOS[@]}; do
+    find $gr -name .git -type d -prune | while read dir; do
+        repo=$(dirname $dir)
+        cd $repo
+        if [[ $(git status --porcelain) ]]; then
+            git_push $repo
+        fi
+    done
 done
 
 echo "------------------------------------------------------------"
