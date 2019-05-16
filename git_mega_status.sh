@@ -36,8 +36,8 @@ for gr in ${GIT_REPOS[@]}; do
     done
 done
 
-echo
-echo "------------------------------------------------------------"
+# echo
+# echo "------------------------------------------------------------"
 if [ $status == 0 ]; then
     echo "all repos are clean"
 else
