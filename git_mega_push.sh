@@ -13,7 +13,7 @@ function git_push {
     cd $dir
     if [[ -n $(git status --porcelain) ]]; then
         echo "error: $dir is not clean"
-        exit 1
+        return
     fi
     git push origin --all
     git push origin --tags
