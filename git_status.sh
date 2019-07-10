@@ -3,6 +3,7 @@
 options="-e"
 
 mgitstatus $options ~/.emacs.d       1
+mgitstatus $options ~/.aws           1
 mgitstatus $options ~/.ssh           1
 mgitstatus $options ~/bin            1
 mgitstatus $options ~/dot-files      1
