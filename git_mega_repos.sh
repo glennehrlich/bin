@@ -1,4 +1,5 @@
 GIT_REPOS=(        \
+  ~/.aws           \
   ~/.emacs.d       \
   ~/.ssh           \
   ~/bin            \
