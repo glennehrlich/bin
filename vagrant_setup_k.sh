@@ -65,17 +65,17 @@ mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
 chown vagrant:vagrant /home/vagrant/.bashrc.original
 
 # Link all of the directories and dot files.
-make_link /home/vagrant/host/.emacs.d                               /home/vagrant/.emacs.d
-make_link /home/vagrant/host/.emacs.d.elpa                          /home/vagrant/.emacs.d.elpa
 make_link /home/vagrant/host/dot-files/.spacetrack.ini              /home/vagrant/.spacetrack.ini
 make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.gitconfig    /home/vagrant/.gitconfig
 make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bash_profile /home/vagrant/.bash_profile
 make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bashrc       /home/vagrant/.bashrc
 
-
-# Create the emacs persistent directories.
-( cd /home/vagrant/.emacs.d ; su vagrant -c "make create_persistent_dirs" )
-chown -R vagrant:vagrant /home/vagrant/.emacs.d.persistent
+# Set up emacs
+( cd /home/vagrant ;          su vagrant -c "git clone https://github.com/glennehrlich/emacs.d .emacs.d" )
+( cd /home/vagrant ;          su vagrant -c "mkdir .emacs.d.elpa" )
+( cd /home/vagrant/.emacs.d ; su vagrant -c "EMACS=/usr/local/bin/emacs make create_persistent_dirs" )
+( cd /home/vagrant/.emacs.d ; su vagrant -c "EMACS=/usr/local/bin/emacs make update_elpa" )
+( cd /home/vagrant/.emacs.d ; su vagrant -c "EMACS=/usr/local/bin/emacs make clean all" )
 rm -rf /home/vagrant/.emacs.d.persistent.old
 
 # Get adobe source code pro fonts.
