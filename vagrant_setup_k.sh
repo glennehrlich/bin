@@ -64,11 +64,22 @@ fi
 mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
 chown vagrant:vagrant /home/vagrant/.bashrc.original
 
+# Make the ~/.config hiearchy.
+mkdir -p /home/vagrant/.config
+chown -R vagrant:vagrant /home/vagrant/.config
+
+# Make ~/.ipython hiearchy.
+mkdir -p /home/vagrant/.ipython/profile_default
+chown -R vagrant:vagrant /home/vagrant/.ipython
+
 # Link all of the directories and dot files.
-make_link /home/vagrant/host/dot-files/.spacetrack.ini              /home/vagrant/.spacetrack.ini
-make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.gitconfig    /home/vagrant/.gitconfig
-make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bash_profile /home/vagrant/.bash_profile
-make_link /home/vagrant/host/dot-files/ubuntu-vagrant/.bashrc       /home/vagrant/.bashrc
+make_link /home/vagrant/dot-files/.spacetrack.ini              /home/vagrant/.spacetrack.ini
+make_link /home/vagrant/dot-files/ubuntu-vagrant/.gitconfig    /home/vagrant/.gitconfig
+make_link /home/vagrant/dot-files/ubuntu-vagrant/.bash_profile /home/vagrant/.bash_profile
+make_link /home/vagrant/dot-files/ubuntu-vagrant/.bashrc       /home/vagrant/.bashrc
+make_link /home/vagrant/dot-files/ipython_config.py            /home/vagrant/.ipython/profile_default/ipython_config.py
+make_link /home/vagrant/dot-files/ipython_kernel_config.py     /home/vagrant/.ipython/profile_default/ipython_kernel_config.py
+make_link /home/vagrant/dot-files/flake8                       /home/vagrant/.config/flake8
 
 # Set up emacs
 ( cd /home/vagrant ;          su vagrant -c "git clone https://github.com/glennehrlich/emacs.d .emacs.d" )
@@ -83,11 +94,6 @@ git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-
 fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
-
-# Copy flake8 configuration file.
-mkdir -p /home/vagrant/.config
-ln -s /home/vagrant/host/dot-files/flake8 /home/vagrant/.config/flake8
-chown -R vagrant:vagrant /home/vagrant/.config
 
 # Remove useless files.
 rm -f /home/vagrant/.bash_logout /home/vagrant/.profile
