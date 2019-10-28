@@ -8,9 +8,8 @@ if ! git rev-parse --is-inside-work-tree  > /dev/null 2>&1; then
     exit 1
 fi
 
-git_repo=`git rev-parse --show-toplevel`
-
 # cd to the toplevel of the git repository.
+git_repo=`git rev-parse --show-toplevel`
 cd $git_repo
 
 if [ ! -e bin ]; then
