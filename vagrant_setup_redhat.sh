@@ -42,7 +42,11 @@ if [[ "$(uname)" == "Darwin" ]]; then
 fi
 
 # Check that git exists.
-if [[ ! -e /usr/bin/git ]]; then
+if [[ -e /usr/local/bin/git ]]; then
+    GIT=/usr/local/bin/git
+elif [[ -e /usr/bin/git ]]; then
+    GIT=/usr/bin/git
+else
     echo "error: git not present"
     exit 1
 fi
@@ -70,7 +74,7 @@ make_link /home/vagrant/dot-files/bams/.bashrc              /home/vagrant/.bashr
 make_link /home/vagrant/dot-files/ubuntu-vagrant/.gitconfig /home/vagrant/.gitconfig
 
 # Set up emacs
-( cd /home/vagrant ;          su vagrant -c "git clone https://github.com/glennehrlich/emacs.d .emacs.d" )
+( cd /home/vagrant ;          su vagrant -c "$GIT clone https://github.com/glennehrlich/emacs.d .emacs.d" )
 ( cd /home/vagrant ;          su vagrant -c "mkdir .emacs.d.elpa" )
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "EMACS=/usr/local/bin/emacs make create_persistent_dirs" )
 ( cd /home/vagrant/.emacs.d ; su vagrant -c "EMACS=/usr/local/bin/emacs make update_elpa" )
@@ -78,7 +82,7 @@ make_link /home/vagrant/dot-files/ubuntu-vagrant/.gitconfig /home/vagrant/.gitco
 rm -rf /home/vagrant/.emacs.d.persistent.old
 
 # Get adobe source code pro fonts.
-git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
+$GIT clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git /home/vagrant/.fonts/adobe-fonts/source-code-pro
 fc-cache -f -v /home/vagrant/.fonts/adobe-fonts/source-code-pro
 chown -R vagrant:vagrant /home/vagrant/.fonts
 echo "added adobe source code pro font"
