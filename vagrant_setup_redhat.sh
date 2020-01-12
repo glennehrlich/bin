@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# The provision directory.
+p=/vagrant/provision
+
 # Setup vagrant environment.
 
 # make_link source destination.
@@ -63,6 +66,34 @@ if [[ ! -d /home/vagrant/tmp ]]; then
     chown vagrant:vagrant /home/vagrant/tmp
     echo "created /home/vagrant/tmp directory"
 fi
+
+# ============================================================
+# Install libvterm
+echo "Starting installation of libvterm"
+
+# Install cmake.
+rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y cmake3
+ln -s /usr/bin/cmake3 /usr/bin/cmake
+
+# Make libvterm.
+mkdir -p /tmp/vterm
+cd /tmp/vterm
+VTERM=libvterm-0.1.3
+VTERM_TAR=${VTERM}.tar.gz
+if ! curl --fail --silent --show-error --location https://launchpad.net/libvterm/trunk/v0.1/+download/${VTERM_TAR} --output ${VTERM_TAR}; then
+    echo "error: could not download $VTERM_TAR; skipping installation of libvterm"
+else
+    echo "Downloaded $VTERM_TAR"
+    tar xzf $VTERM_TAR
+    cd $VTERM
+    make all install
+    echo "Finished installing libvterm"
+fi
+# ============================================================
+
+# Build our own emacs.
+/home/vagrant/bin/provision_emacs_redhat.sh
 
 # Save the original .bashrc
 mv /home/vagrant/.bashrc /home/vagrant/.bashrc.original
