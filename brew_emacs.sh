@@ -5,7 +5,7 @@
 brew tap d12frosted/emacs-plus
 
 brew uninstall --force emacs-plus@28
-brew install emacs-plus@28 --with-jansson
+brew install emacs-plus@28
 dockutil --remove Emacs
 dockutil --add /usr/local/opt/emacs-plus@28/Emacs.app --after Safari
 cd ~/.emacs.d
