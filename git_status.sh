@@ -1,14 +1,14 @@
-#!/usr/bin/env BASH
+#!/usr/bin/env bash
 
-options="-e"
+options="-e --depth=1"
 
-mgitstatus $options ~/.emacs.d       1
-mgitstatus $options ~/.aws           1
-mgitstatus $options ~/.ssh           1
-mgitstatus $options ~/bin            1
-mgitstatus $options ~/dot-files      1
-mgitstatus $options ~/gitlab         5
-mgitstatus $options ~/gitlab-archive 5
-mgitstatus $options ~/notes          1
-mgitstatus $options ~/notes-personal 1
-mgitstatus $options ~/todo           1
+mgitstatus $options ~/.emacs.d
+mgitstatus $options ~/.aws
+mgitstatus $options ~/.ssh
+mgitstatus $options ~/bin
+mgitstatus $options ~/dot-files
+mgitstatus $options ~/gitlab
+mgitstatus $options ~/gitlab-archive
+mgitstatus $options ~/notes
+mgitstatus $options ~/notes-personal
+mgitstatus $options ~/todo
