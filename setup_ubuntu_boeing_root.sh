@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function banner {
+    local msg=$1
+
+    echo "============================================================"
+    echo $msg
+    echo "============================================================"
+    echo
+}
+
 # ============================================================
 # This script must be run as root.
 # ============================================================
@@ -10,7 +19,7 @@ if [[ "$(whoami)" != "root" ]]; then
 fi
 
 # ============================================================
-# Install apt-related utilities.
+banner "Install apt-related utilities"
 # ============================================================
 
 # Install some apt-related utils.
@@ -23,24 +32,24 @@ apt-get -y install             \
     wget
 
 # ============================================================
-# Install git.
+banner "Install git"
 # ============================================================
 
 # Add the git ppa.
-add-apt-repository ppa:git-core/ppa
+add-apt-repository -y ppa:git-core/ppa
 apt update
 
 apt-get -y install git
 
 # ============================================================
-# Install cmake.
+banner "Install cmake"
 # ============================================================
 
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
     gpg --dearmor - | \
     tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
 
-apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
 apt update
 
 apt-get -y install kitware-archive-keyring
@@ -49,7 +58,7 @@ rm /etc/apt/trusted.gpg.d/kitware.gpg
 apt-get -y install cmake
 
 # ============================================================
-# Install vterm.
+banner "Install vterm"
 # ============================================================
 
 apt-get -y install \
@@ -65,7 +74,7 @@ make
 make PREFIX=/usr install
 
 # ============================================================
-# Install emacs.
+banner "Install emacs"
 # ============================================================
 
 # Get some build tools.
@@ -75,7 +84,7 @@ apt-get -y install \
 
 # Add the ubuntu emacs snapshot ppa. This is only used to assist
 # building emacs. The -s adds the sources repository.
-add-apt-repository -s ppa:ubuntu-elisp/ppa
+add-apt-repository -y -s ppa:ubuntu-elisp/ppa
 apt update
 
 # Get build dependencies for emacs-snapshot.
@@ -93,7 +102,7 @@ make
 make install
 
 # ============================================================
-# Install ripgrep.
+banner "Install ripgrep"
 # ============================================================
 
 # Get curl.
@@ -105,7 +114,7 @@ curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_
 dpkg -i ripgrep_12.1.1_amd64.deb
 
 # ============================================================
-# Install synaptic.
+banner "Install synaptic"
 # ============================================================
 
 apt-get -y install synaptic
