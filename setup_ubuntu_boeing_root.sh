@@ -120,3 +120,10 @@ banner "Install synaptic"
 # ============================================================
 
 apt-get -y install synaptic
+
+# ============================================================
+banner "Install Ubuntu MATE color themes"
+# ============================================================
+
+add-apt-repository -y ppa:lah7/ubuntu-mate-colours
+apt-get -y install ubuntu-mate-colours-all
