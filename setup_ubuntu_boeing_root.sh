@@ -10,10 +10,11 @@ if [[ "$(whoami)" != "root" ]]; then
 fi
 
 # ============================================================
-# Install
+# Install apt-related utilities.
 # ============================================================
 
 # Install some apt-related utils.
+apt update
 apt-get -y install             \
     apt-transport-https        \
     ca-certificates            \
@@ -21,20 +22,13 @@ apt-get -y install             \
     software-properties-common \
     wget
 
-
-# Add the ubuntu emacs snapshot ppa. This is only used to assist
-# building emacs. The -s adds the sources repository.
-add-apt-repository -s ppa:ubuntu-elisp/ppa
-
-# Add the git ppa.
-add-apt-repository ppa:git-core/ppa
-
-# Update.
-apt update
-
 # ============================================================
 # Install git.
 # ============================================================
+
+# Add the git ppa.
+add-apt-repository ppa:git-core/ppa
+apt update
 
 apt-get -y install git
 
@@ -74,18 +68,44 @@ make PREFIX=/usr install
 # Install emacs.
 # ============================================================
 
+# Get some build tools.
 apt-get -y install \
     autoconf       \
     texinfo
 
+# Add the ubuntu emacs snapshot ppa. This is only used to assist
+# building emacs. The -s adds the sources repository.
+add-apt-repository -s ppa:ubuntu-elisp/ppa
+apt update
+
 # Get build dependencies for emacs-snapshot.
 apt-get build-dep emacs-snapshot
 
+# Get the emacs git repo.
 cd /tmp
 git clone --depth 1 https://git.savannah.gnu.org/git/emacs.git
+
+# Build and install.
 cd emacs
 ./autogen.sh
 ./configure --prefix=/usr/local
 make
-sudo make install
+make install
 
+# ============================================================
+# Install ripgrep.
+# ============================================================
+
+# Get curl.
+apt-get -y install curl
+
+# Get and install.
+cd /tmp
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
+dpkg -i ripgrep_12.1.1_amd64.deb
+
+# ============================================================
+# Install synaptic.
+# ============================================================
+
+apt-get -y install synaptic
