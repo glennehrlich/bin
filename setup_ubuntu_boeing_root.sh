@@ -90,7 +90,7 @@ add-apt-repository -y -s ppa:ubuntu-elisp/ppa
 apt update
 
 # Get build dependencies for emacs-snapshot.
-apt-get build-dep emacs-snapshot
+apt-get -y build-dep emacs-snapshot
 
 # Get the emacs git repo.
 cd /tmp
