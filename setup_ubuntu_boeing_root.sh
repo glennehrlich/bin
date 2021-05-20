@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 
+# ============================================================
+# Usage:
+#
+# This script must be run while off of the Boeing Enterprise Network
+# (aka GlobalProtect) because it will download software from the
+# internet.
+#
+# This script must be run as root, not as sudo:
+#   sudo passwd root
+#   <change root password to whatever, suggestion: "root">
+#
+# To run:
+#   cd /tmp
+#   wget https://raw.githubusercontent.com/glennehrlich/bin/master/setup_ubuntu_boeing_root.sh
+#   chmod +x setup_ubuntu_boeing_root.sh
+#   su -
+#     <enter root password>
+#   ./setup_ubuntu_boeing_root.sh
+# ============================================================
+
 function banner {
     local msg=$1
 
@@ -11,7 +31,7 @@ function banner {
 }
 
 # ============================================================
-# This script must be run as root.
+# Check that we are running as root.
 # ============================================================
 
 if [[ "$(whoami)" != "root" ]]; then
