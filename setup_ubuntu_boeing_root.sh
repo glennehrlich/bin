@@ -75,33 +75,33 @@ git checkout master
 make
 make PREFIX=/usr install
 
-# # ============================================================
-# banner "Install emacs"
-# # ============================================================
+# ============================================================
+banner "Install emacs"
+# ============================================================
 
-# # Get some build tools.
-# apt-get -y install \
-#     autoconf       \
-#     texinfo
+# Get some build tools.
+apt-get -y install \
+    autoconf       \
+    texinfo
 
-# # Add the ubuntu emacs snapshot ppa. This is only used to assist
-# # building emacs. The -s adds the sources repository.
-# add-apt-repository -y -s ppa:ubuntu-elisp/ppa
-# apt update
+# Add the ubuntu emacs snapshot ppa. This is only used to assist
+# building emacs. The -s adds the sources repository.
+add-apt-repository -y -s ppa:ubuntu-elisp/ppa
+apt update
 
-# # Get build dependencies for emacs-snapshot.
-# apt-get build-dep emacs-snapshot
+# Get build dependencies for emacs-snapshot.
+apt-get build-dep emacs-snapshot
 
-# # Get the emacs git repo.
-# cd /tmp
-# git clone --depth 1 https://git.savannah.gnu.org/git/emacs.git
+# Get the emacs git repo.
+cd /tmp
+git clone --depth 1 https://git.savannah.gnu.org/git/emacs.git
 
-# # Build and install.
-# cd emacs
-# ./autogen.sh
-# ./configure --prefix=/usr/local
-# make
-# make install
+# Build and install.
+cd emacs
+./autogen.sh
+./configure --prefix=/usr/local
+make
+make install
 
 # ============================================================
 banner "Install ripgrep"
