@@ -6,7 +6,7 @@ function banner {
     echo "============================================================"
     echo $msg
     echo "============================================================"
-    echo
+    echo ""
 }
 
 # ============================================================
@@ -67,7 +67,8 @@ apt-get -y install \
     pkg-config
 
 cd /tmp
-git clone git@github.com:neovim/libvterm.git
+git clone https://github.com/neovim/libvterm.git
+
 cd libvterm
 git checkout master
 make
