@@ -46,6 +46,7 @@ banner "Install personal emacs configuration"
 # ============================================================
 
 rm -rf ~/.emacs.d
+rm -rf ~/.emacs.d.elpa
 git clone git@github.com:glennehrlich/emacs.d ~/.emacs.d
 mkdir ~/.emacs.d.elpa
 cd ~/.emacs.d
@@ -61,3 +62,9 @@ cd
 git clone git@github.com:glennehrlich/notes
 git clone git@github.com:glennehrlich/dot-files
 git clone git@github.com:glennehrlich/todo
+
+# ============================================================
+banner "Removing bash history"
+# ============================================================
+
+history -c
