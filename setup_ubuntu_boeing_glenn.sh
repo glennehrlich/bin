@@ -45,7 +45,7 @@ mkdir ~/tmp
 banner "Install personal emacs configuration"
 # ============================================================
 
-export EMACS=/usr/bin/emacs
+export EMACS=/usr/local/bin/emacs
 rm -rf ~/.emacs.d
 git clone git@github.com:glennehrlich/emacs.d ~/.emacs.d
 mkdir ~/.emacs.d.elpa
@@ -59,6 +59,6 @@ banner "Clone personal directories"
 # ============================================================
 
 cd
-git clone git@github.com/glennehrlich/notes
-git clone git@github.com/glennehrlich/dot-files
-git clone git@github.com/glennehrlich/todo
+git clone git@github.com:glennehrlich/notes
+git clone git@github.com:glennehrlich/dot-files
+git clone git@github.com:glennehrlich/todo
