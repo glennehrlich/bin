@@ -45,7 +45,6 @@ mkdir ~/tmp
 banner "Install personal emacs configuration"
 # ============================================================
 
-export EMACS=/usr/local/bin/emacs
 rm -rf ~/.emacs.d
 git clone git@github.com:glennehrlich/emacs.d ~/.emacs.d
 mkdir ~/.emacs.d.elpa
