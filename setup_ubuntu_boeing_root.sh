@@ -147,3 +147,9 @@ banner "Install Ubuntu MATE color themes"
 
 add-apt-repository -y ppa:lah7/ubuntu-mate-colours
 apt-get -y install ubuntu-mate-colours-all
+
+# ============================================================
+banner "Removing unattended-upgrades"
+# ============================================================
+
+apt-get -y --purge autoremove unattended-upgrades
