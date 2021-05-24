@@ -153,3 +153,9 @@ banner "Removing unattended-upgrades"
 # ============================================================
 
 apt-get -y --purge autoremove unattended-upgrades
+
+# ============================================================
+banner "Install openjdk 8"
+# ============================================================
+
+apt-get -y install openjdk-8-jdk
