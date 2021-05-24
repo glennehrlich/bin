@@ -59,8 +59,9 @@ banner "Clone personal directories"
 # ============================================================
 
 cd
-git clone git@github.com:glennehrlich/notes
+git clone git@github.com:glennehrlich/bin
 git clone git@github.com:glennehrlich/dot-files
+git clone git@github.com:glennehrlich/notes
 git clone git@github.com:glennehrlich/todo
 
 # ============================================================
