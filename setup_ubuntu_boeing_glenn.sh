@@ -64,6 +64,13 @@ git clone git@github.com:glennehrlich/dot-files
 git clone git@github.com:glennehrlich/todo
 
 # ============================================================
+banner "Set up git config"
+# ============================================================
+
+git config --global user.name "Glenn Ehrlich"
+git config --global user.email "glenn.ehrich2@boeing.com"
+
+# ============================================================
 banner "Removing bash history"
 # ============================================================
 
