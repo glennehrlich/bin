@@ -165,3 +165,10 @@ banner "Install maven"
 # ============================================================
 
 apt-get -y install maven
+
+# ============================================================
+banner "Make /opt/data/logs directory"
+# ============================================================
+
+mkdir -p /opt/data/logs
+chmod -R go+rw /opt/data

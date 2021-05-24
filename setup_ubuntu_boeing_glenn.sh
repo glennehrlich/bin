@@ -26,6 +26,30 @@ function banner {
     echo
 }
 
+function make_link {
+    local source=$1
+    local destination=$2
+
+    if [[ -L $destination ]]; then
+        rm $destination
+        # echo "removed symbolic link $destination"
+    fi
+
+    if [[ -e $destination ]]; then
+        rm -rf $destination
+        # echo "removed file $destination"
+    fi
+
+    ln -s $source $destination
+
+    if [[ -L $destination ]]; then
+        echo "created symbolic link $destination to $source"
+    else
+        echo "error: could not create symbolic link $destination to $source"
+        exit 1
+    fi
+}
+
 # ============================================================
 # Check that we are running as user glenn.
 # ============================================================
@@ -65,11 +89,16 @@ git clone git@github.com:glennehrlich/notes
 git clone git@github.com:glennehrlich/todo
 
 # ============================================================
-banner "Set up git config"
+banner "Set up dot files"
 # ============================================================
 
-git config --global user.name "Glenn Ehrlich"
-git config --global user.email "glenn.ehrich2@boeing.com"
+make_link ~/dot-files/boeing/.gitconfig ~/.gitconfig
+
+mkdir ~/.m2
+make_link ~/dot-files/boeing/.m2/settings.xml ~/.m2/settings.xml
+
+make_link ~/dot-files/boeing/.bashrc       ~/.bashrc
+make_link ~/dot-files/boeing/.bash_profile ~/.bash_profile
 
 # ============================================================
 banner "Removing bash history"
