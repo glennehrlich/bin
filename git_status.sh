@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # options="-e --depth=0"
-options="--depth=0"
+options="-f --depth=0"
 
 mgitstatus $options ~/.emacs.d
 mgitstatus $options ~/.ssh
