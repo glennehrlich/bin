@@ -40,16 +40,18 @@ if [[ "$(whoami)" != "root" ]]; then
 fi
 
 # ============================================================
-banner "Install apt-related utilities"
+banner "Install utilities"
 # ============================================================
 
-# Install some apt-related utils.
+# Install some needed utils.
 apt update
 apt-get -y install             \
     apt-transport-https        \
     ca-certificates            \
+    curl                       \
     gnupg                      \
     software-properties-common \
+    synaptic                   \
     wget
 
 # ============================================================
@@ -127,19 +129,20 @@ make install
 banner "Install ripgrep"
 # ============================================================
 
-# Get curl.
-apt-get -y install curl
-
 # Get and install.
 cd /tmp
+rm -f ripgrep*
 curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
-dpkg -i ripgrep_12.1.1_amd64.deb
+dpkg -i ripgrep*_amd64.deb
 
 # ============================================================
-banner "Install synaptic"
+banner "Install pandoc"
 # ============================================================
 
-apt-get -y install synaptic
+cd /tmp
+rm -f pandoc*
+curl -LO https://github.com/jgm/pandoc/releases/download/2.14.0.1/pandoc-2.14.0.1-1-amd64.deb
+dpkg -i pandoc*.deb
 
 # ============================================================
 banner "Install Ubuntu MATE color themes"
