@@ -11,5 +11,4 @@ mgitstatus $options ~/g
 mgitstatus $options ~/git
 mgitstatus $options ~/github
 mgitstatus $options ~/notes
-mgitstatus $options ~/notes-personal
 mgitstatus $options ~/todo
