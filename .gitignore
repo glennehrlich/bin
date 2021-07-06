@@ -1,1 +1,6 @@
+# .gitignore
+
+# jetbrains tools
+clion
 idea
+pycharm
