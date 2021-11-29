@@ -65,6 +65,16 @@ apt update
 apt-get -y install git
 
 # ============================================================
+banner "Install gcc / g++ 11"
+# ============================================================
+
+# Add the toolchain ppa.
+add-apt-repository ppa:ubuntu-toolchain-r/test
+apt update
+
+apt-get -y install gcc-11 g++-11
+
+# ============================================================
 banner "Install cmake"
 # ============================================================
 
