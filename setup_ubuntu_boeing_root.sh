@@ -78,15 +78,15 @@ apt-get -y install gcc-11 g++-11
 banner "Install cmake"
 # ============================================================
 
-wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
-    gpg --dearmor - | \
-    tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+# wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
+#     gpg --dearmor - | \
+#     tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
 
-apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
-apt update
+# apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ impish main'
+# apt update
 
-apt-get -y install kitware-archive-keyring
-rm /etc/apt/trusted.gpg.d/kitware.gpg
+# apt-get -y install kitware-archive-keyring
+# rm /etc/apt/trusted.gpg.d/kitware.gpg
 
 apt-get -y install cmake
 
