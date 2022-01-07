@@ -69,7 +69,7 @@ banner "Install gcc / g++ 11"
 # ============================================================
 
 # Add the toolchain ppa.
-add-apt-repository ppa:ubuntu-toolchain-r/test
+add-apt-repository -y ppa:ubuntu-toolchain-r/test
 apt update
 
 apt-get -y install gcc-11 g++-11
@@ -142,7 +142,7 @@ banner "Install ripgrep"
 # Get and install.
 cd /tmp
 rm -f ripgrep*
-curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
 dpkg -i ripgrep*_amd64.deb
 
 # ============================================================
@@ -151,7 +151,7 @@ banner "Install pandoc"
 
 cd /tmp
 rm -f pandoc*
-curl -LO https://github.com/jgm/pandoc/releases/download/2.14.0.1/pandoc-2.14.0.1-1-amd64.deb
+curl -LO https://github.com/jgm/pandoc/releases/download/2.16.2/pandoc-2.16.2-1-amd64.deb
 dpkg -i pandoc*.deb
 
 # ============================================================
@@ -167,21 +167,43 @@ banner "Removing unattended-upgrades"
 
 apt-get -y --purge autoremove unattended-upgrades
 
-# ============================================================
-banner "Install openjdk 8"
-# ============================================================
+# # ============================================================
+# banner "Install openjdk 8"
+# # ============================================================
 
-apt-get -y install openjdk-8-jdk
+# apt-get -y install openjdk-8-jdk
 
-# ============================================================
-banner "Install maven"
-# ============================================================
+# # ============================================================
+# banner "Install maven"
+# # ============================================================
 
-apt-get -y install maven
+# apt-get -y install maven
 
-# ============================================================
-banner "Make /opt/data/logs directory"
-# ============================================================
+# # ============================================================
+# banner "Make /opt/data/logs directory"
+# # ============================================================
 
-mkdir -p /opt/data/logs
-chmod -R go+rw /opt/data
+# mkdir -p /opt/data/logs
+# chmod -R go+rw /opt/data
+
+# # ============================================================
+# banner "BC2 stuff"
+# # ============================================================
+
+# apt-get update
+# apt-get -y install meld
+# apt-get -y install openssl
+# apt-get -y install libssl-dev
+# apt-get -y install doxygen
+# apt-get -y install python2
+# apt-get -y install python3
+# apt-get -y install ruby
+# apt-get -y install cyrus-sasl-devel
+# apt-get -y install uuid-dev
+# apt-get -y install alien dpkg-dev debhelper build-essential
+# apt-get -y install pip
+# apt-get -y install python3-pip
+# apt-get -y install docker.io
+# pip install --user conan
+# pip3 install --user docker-compose
+# pip3 install websockets
