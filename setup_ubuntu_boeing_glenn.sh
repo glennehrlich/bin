@@ -98,7 +98,10 @@ mkdir ~/.m2
 make_link ~/dot-files/boeing/.m2/settings.xml ~/.m2/settings.xml
 
 make_link ~/dot-files/boeing/.bashrc       ~/.bashrc
-make_link ~/dot-files/boeing/.bash_profile ~/.bash_profile
+
+# 2022-02-05: not doing this in >= 21.10 because default .profile does
+# this.
+# make_link ~/dot-files/boeing/.bash_profile ~/.bash_profile
 
 # ============================================================
 banner "Removing bash history"

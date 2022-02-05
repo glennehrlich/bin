@@ -186,9 +186,9 @@ apt-get -y --purge autoremove unattended-upgrades
 # mkdir -p /opt/data/logs
 # chmod -R go+rw /opt/data
 
-# # ============================================================
-# banner "BC2 stuff"
-# # ============================================================
+# ============================================================
+banner "BC2 stuff"
+# ============================================================
 
 # apt-get update
 # apt-get -y install meld
@@ -207,3 +207,10 @@ apt-get -y --purge autoremove unattended-upgrades
 # pip install --user conan
 # pip3 install --user docker-compose
 # pip3 install websockets
+
+apt-get update
+
+apt-get -y install \
+        doxygen \
+        graphviz
+
