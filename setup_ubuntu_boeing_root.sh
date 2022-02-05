@@ -155,6 +155,17 @@ curl -LO https://github.com/jgm/pandoc/releases/download/2.16.2/pandoc-2.16.2-1-
 dpkg -i pandoc*.deb
 
 # ============================================================
+banner "Install plantuml"
+# ============================================================
+
+cd /tmp
+rm -f plantuml*
+curl -LO https://github.com/plantuml/plantuml/releases/download/v1.2022.1/plantuml-1.2022.1.jar
+cp plantuml*.jar /usr/local/bin
+cd /usr/local/bin
+ln -s plantuml-1.2022.1.jar plantuml.jar
+
+# ============================================================
 banner "Install Ubuntu MATE color themes"
 # ============================================================
 
