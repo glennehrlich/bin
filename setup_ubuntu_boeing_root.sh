@@ -178,17 +178,17 @@ banner "Removing unattended-upgrades"
 
 apt-get -y --purge autoremove unattended-upgrades
 
-# # ============================================================
-# banner "Install openjdk 8"
-# # ============================================================
+# ============================================================
+banner "Install openjdk 8"
+# ============================================================
 
-# apt-get -y install openjdk-8-jdk
+apt-get -y install openjdk-11-jdk
 
-# # ============================================================
-# banner "Install maven"
-# # ============================================================
+# ============================================================
+banner "Install maven"
+# ============================================================
 
-# apt-get -y install maven
+apt-get -y install maven
 
 # # ============================================================
 # banner "Make /opt/data/logs directory"
@@ -222,6 +222,9 @@ banner "BC2 stuff"
 apt-get update
 
 apt-get -y install \
-        doxygen \
-        graphviz
+        docker.io  \
+        doxygen    \
+        graphviz   \
+        rpm
+
 
