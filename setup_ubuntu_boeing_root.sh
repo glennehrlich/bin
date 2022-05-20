@@ -40,6 +40,19 @@ if [[ "$(whoami)" != "root" ]]; then
 fi
 
 # ============================================================
+# Software versions
+# ============================================================
+
+GCC_VERSION_DEB=11
+GCC_VERSION=11.2
+
+RIPGREP_VERSION=13.0.0
+PANDOC_VERSION=2.16.2
+PLANTUML_VERSION=1.2022.1
+GLOBAL_VERSION=6.6.8
+JAVA_VERSION=11
+
+# ============================================================
 banner "Install utilities"
 # ============================================================
 
@@ -65,14 +78,39 @@ apt update
 apt-get -y install git
 
 # ============================================================
-banner "Install gcc / g++ 11"
+banner "Install gcc / g++ ${GCC_VERSION_DEB}"
 # ============================================================
 
 # Add the toolchain ppa.
-add-apt-repository -y ppa:ubuntu-toolchain-r/test
-apt update
+# add-apt-repository -y ppa:ubuntu-toolchain-r/test
+# apt update
 
-apt-get -y install gcc-11 g++-11
+apt-get -y install gcc-${GCC_VERSION_DEB} g++-${GCC_VERSION_DEB}
+
+gcc-${GCC_VERSION_DEB} --version
+
+cd /opt
+
+mkdir gcc-${GCC_VERSION}
+cd gcc-${GCC_VERSION}
+
+mkdir bin
+cd bin
+
+ln -s /usr/bin/cpp-${GCC_VERSION_DEB}        cpp
+ln -s /usr/bin/c++-${GCC_VERSION_DEB}        c++
+ln -s /usr/bin/gcc-${GCC_VERSION_DEB}        gcc
+ln -s /usr/bin/gcc-ar-${GCC_VERSION_DEB}     gcc-ar
+ln -s /usr/bin/gcc-nm-${GCC_VERSION_DEB}     gcc-nm
+ln -s /usr/bin/gcc-ranlib-${GCC_VERSION_DEB} gcc-ranlib
+ln -s /usr/bin/gcov-${GCC_VERSION_DEB}       gcov
+ln -s /usr/bin/gcov-dump-${GCC_VERSION_DEB}  gcov-dump
+ln -s /usr/bin/gcov-tool-${GCC_VERSION_DEB}  gcov-tool
+ln -s /usr/bin/g++-${GCC_VERSION_DEB}        g++
+ln -s /usr/bin/lto-dump-${GCC_VERSION_DEB}   lto-dump
+
+cd /opt/gcc-${GCC_VERSION}
+ln -s /usr/lib/gcc/x86_64-linux-gnu/${GCC_VERSION} lib64
 
 # ============================================================
 banner "Install cmake"
@@ -106,6 +144,9 @@ cd libvterm
 git checkout master
 make
 make PREFIX=/usr install
+
+echo
+echo "install warnings are ok"
 
 # ============================================================
 banner "Install emacs"
@@ -142,7 +183,7 @@ banner "Install ripgrep"
 # Get and install.
 cd /tmp
 rm -f ripgrep*
-curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}/ripgrep_${RIPGREP_VERSION}_amd64.deb
 dpkg -i ripgrep*_amd64.deb
 
 # ============================================================
@@ -151,7 +192,7 @@ banner "Install pandoc"
 
 cd /tmp
 rm -f pandoc*
-curl -LO https://github.com/jgm/pandoc/releases/download/2.16.2/pandoc-2.16.2-1-amd64.deb
+curl -LO https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb
 dpkg -i pandoc*.deb
 
 # ============================================================
@@ -160,10 +201,23 @@ banner "Install plantuml"
 
 cd /tmp
 rm -f plantuml*
-curl -LO https://github.com/plantuml/plantuml/releases/download/v1.2022.1/plantuml-1.2022.1.jar
+curl -LO https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
 cp plantuml*.jar /usr/local/bin
 cd /usr/local/bin
-ln -s plantuml-1.2022.1.jar plantuml.jar
+ln -s plantuml-${PLANTUML_VERSION}.jar plantuml.jar
+
+# ============================================================
+banner "Install gnu global"
+# ============================================================
+
+cd /tmp
+rm -f global*
+curl -LO https://ftp.gnu.org/pub/gnu/global/global-${GLOBAL_VERSION}.tar.gz
+tar xzf global*.tar.gz
+cd global*/
+./configure
+make
+make install
 
 # ============================================================
 banner "Install Ubuntu MATE color themes"
@@ -179,10 +233,10 @@ banner "Removing unattended-upgrades"
 apt-get -y --purge autoremove unattended-upgrades
 
 # ============================================================
-banner "Install openjdk 8"
+banner "Install openjdk ${JAVA_VERSION}"
 # ============================================================
 
-apt-get -y install openjdk-11-jdk
+apt-get -y install openjdk-${JAVA_VERSION}-jdk
 
 # ============================================================
 banner "Install maven"
@@ -221,10 +275,14 @@ banner "BC2 stuff"
 
 apt-get update
 
-apt-get -y install \
-        docker.io  \
-        doxygen    \
-        graphviz   \
-        rpm
+apt-get -y install  \
+        docker.io   \
+        doxygen     \
+        graphviz    \
+        python2     \
+        python3-pip \
+        rpm         \
+        ruby
 
+adduser glenn vboxsf
 
