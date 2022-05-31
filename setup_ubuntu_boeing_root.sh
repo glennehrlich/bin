@@ -48,7 +48,7 @@ GCC_VERSION=11.2
 
 RIPGREP_VERSION=13.0.0
 PANDOC_VERSION=2.16.2
-PLANTUML_VERSION=1.2022.1
+PLANTUML_VERSION=1.2022.5
 GLOBAL_VERSION=6.6.8
 JAVA_VERSION=11
 
@@ -202,6 +202,7 @@ banner "Install plantuml"
 cd /tmp
 rm -f plantuml*
 curl -LO https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
+rm -f /usr/local/bin/plantuml*
 cp plantuml*.jar /usr/local/bin
 cd /usr/local/bin
 ln -s plantuml-${PLANTUML_VERSION}.jar plantuml.jar
