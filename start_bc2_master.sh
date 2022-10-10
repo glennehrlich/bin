@@ -9,7 +9,7 @@ sleep 5
 sleep 5
 
 ./sdbservice &
-sleep 5
+sleep 10
 
 ./tm_pub_service --assets SV030 &
 sleep 5
