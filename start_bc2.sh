@@ -4,10 +4,12 @@ rm -f ~/bc2/usr/etc/log/*
 
 cd ~/bc2/usr/bin
 
-./message_distributor_proxy -p 127.0.0.1:28455 -s 127.0.0.1:28456 &
+# ./message_distributor_proxy -p 127.0.0.1:28455 -s 127.0.0.1:28456 &
+./message_distributor_proxy -n message_distributor_proxy1 &
 sleep 5
 
-./message_distributor_proxy -p 127.0.0.1:28457 -s 127.0.0.1:28458 &
+# ./message_distributor_proxy -p 127.0.0.1:28457 -s 127.0.0.1:28458 &
+./message_distributor_proxy -n message_distributor_proxy2 &
 sleep 5
 
 ./sdbservice &
