@@ -50,12 +50,21 @@ ssh -q $user@$host "mkdir -p $remote_repo"
 
 # Check that remote_repo exists, exit if it does not.
 if ! ssh -q $user@$host "[ -d $remote_repo ]"; then
-    echo "$host:$remote_repo does not exist"
+    echo "error: $host:$remote_repo does not exist"
     exit 1
 fi
+echo "directory $host:$remote_repo is ready"
 
 # Init a bare repo in remote_repo.
-ssh -q $user@$host "git init --quiet --bare $remote_repo"
+if ! ssh -q $user@$host "git init --quiet --bare $remote_repo"; then
+   echo "error: could not git init repo $host:$remote_repo"
+   exit 1
+fi
+echo "git bare repo $host:$remote_repo created"
 
 # Add the remote repo to this repo.
-git remote add origin $host:$remote_repo
+if ! git remote add origin $host:$remote_repo; then
+   echo "could not add remote origin $host:$remote_repo to repo $full_repo"
+   exit 1
+fi
+echo "added remote origin $host:$remote_epot to repo $full_repo"

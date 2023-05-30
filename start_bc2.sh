@@ -1,24 +1,29 @@
 #!/usr/bin/env bash
 
+echo "clearing logs"
 rm -f ~/bc2/usr/etc/log/*
 
 cd ~/bc2/usr/bin
 
-# ./message_distributor_proxy -p 127.0.0.1:28455 -s 127.0.0.1:28456 &
-./message_distributor_proxy -n message_distributor_proxy1 &
+echo "starting event distributer"
+./message_distributor_proxy --name event_distributor_proxy1 &
 sleep 5
 
-# ./message_distributor_proxy -p 127.0.0.1:28457 -s 127.0.0.1:28458 &
-./message_distributor_proxy -n message_distributor_proxy2 &
+echo "starting telemetry distributor"
+./message_distributor_proxy -n telemetry_distributor_proxy1 &
 sleep 5
 
-./sdbservice &
-sleep 10
+# echo "starting sdbservice"
+# ./sdbservice --no_unique_name &
+# sleep 10
+echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
 
-./tm_pub_service --assets SV030 &
+echo "starting tm_pub_service"
+./tm_pub_service &
 sleep 5
 
-./rawtcp_altair_gateway  --name streamgateway --gateway_id "deploy-test" --rawtcp_tm_hostport 127.0.0.1:32100 --rawtcp_tc_hostport 127.0.0.1:32000 --tc_listen_hostport 0.0.0.0:28465 --max_tm_framecount 4095 &
+echo "starting stream gateway"
+./rawtcp_altair_gateway  --name streamgateway --gateway_id "deploy-test" --rawtcp_tm_hostport 127.0.0.1:32100 --rawtcp_tc_hostport 127.0.0.1:32000 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 &
 sleep 5
 
 # ./tcservice --assets SV030 &
