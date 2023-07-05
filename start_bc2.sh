@@ -23,7 +23,7 @@ echo "starting tm_pub_service"
 sleep 5
 
 echo "starting stream gateway"
-./rawtcp_altair_gateway  --name streamgateway --gateway_id "deploy-test" --rawtcp_tm_hostport 127.0.0.1:32100 --rawtcp_tc_hostport 127.0.0.1:32000 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 &
+./rawtcp_altair_gateway  --name streamgateway --gateway_id "deploy-test" --max_tm_framecount 4095 &
 sleep 5
 
 # ./tcservice --assets SV030 &
