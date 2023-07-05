@@ -31,11 +31,12 @@ pkill rawtcp_altair_gateway
 pkill sdbservice
 pkill tm_pub_service
 
-REPOS=( \
-  messaging \
-  sdbservice \
-  streamgateway \
-  tmservice \
+REPOS=(            \
+  messaging        \
+  parametermanager \
+  sdbservice       \
+  streamgateway    \
+  tmservice        \
 )
 
 # For each repo, make sure it's clean, checkout master, then do a pull.
@@ -78,13 +79,22 @@ for repo in ${REPOS[@]}; do
 done
 
 # Build the services.
-build_executable messaging message_distributor_proxy
-build_executable streamgateway rawtcp_altair_gateway
-build_executable sdbservice sdbservice
-build_executable tmservice tm_pub_service
+build_executable messaging        message_distributor_proxy
+build_executable parametermanager parameter_manager_service
+build_executable streamgateway    rawtcp_altair_gateway
+build_executable sdbservice       sdbservice
+build_executable tmservice        tm_pub_service
+build_executable tmservice        to_redis
 
 # Build some utilities.
-build_executable messaging tail_events
-build_executable messaging view_events
-build_executable tmservice tail_tm
-build_executable tmservice view_tm
+build_executable messaging        taipl_events
+build_executable messaging        view_events
+build_executable parametermanager get_parameter
+build_executable parametermanager set_parameter
+build_executable sdbservice       add_assets
+build_executable sdbservice       get_assets
+build_executable sdbservice       loaddatabase
+build_executable sdbservice       tc_def
+build_executable sdbservice       tm_def
+build_executable tmservice        tail_tm
+build_executable tmservice        view_tm
