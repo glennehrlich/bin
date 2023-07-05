@@ -4,7 +4,7 @@ INSTALL=~/bc2/usr/bin/tcservice
 
 cd ~/git/bc2/tcservice/build
 
-if ! make tcservice; then
+if ! make tcservice send_tc; then
     echo "build failed, not installing"
     exit 1
 fi
@@ -40,8 +40,12 @@ fi
 cp bin/tcservice $INSTALL
 if [ -f $INSTALL ]; then
     echo "tcservice installed successfully"
-    exit 0
 else
     echo "tcservice failed to install"
     exit 1
 fi
+
+cp bin/send_tc ~/bc2/usr/bin
+echo "send_tc installed"
+
+exit 0
