@@ -22,8 +22,14 @@ sleep 5
 # sleep 10
 echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
 
+echo "need to manually start parameter_manager; run: ./parameter_manager_service --redis_password 1234abcd"
+
 echo "starting tm_pub_service"
 ./tm_pub_service &
+sleep 5
+
+ehco "starting to_redis"
+./to_redis --redis_password 1234abcd --assets SV030 &
 sleep 5
 
 echo "starting stream gateway"
