@@ -18,7 +18,7 @@ if pgrep tcservice; then
     echo "tcservice is running, pkill tcservice"
     pkill tcservice
 fi
-sleep 2
+sleep 5
 if pgrep tcservice; then
     echo "tcservice is still running, pkill -9 tcservice"
     pkill -9 tcservice

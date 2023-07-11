@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "clearing logs"
-rm -f ~/bc2/usr/etc/log/*
+rm -f ~/bc2/usr/log/*
 
 cd ~/bc2/usr/bin
 
@@ -20,15 +20,30 @@ sleep 5
 # echo "starting sdbservice"
 # ./sdbservice --no_unique_name &
 # sleep 10
-echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
+# echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
+echo "starting sdbservice"
+# ./sdbservice --no_unique_name        & # warm
+./sdbservice --no_unique_name --cold & # cold
+sleep 10
 
-echo "need to manually start parameter_manager; run: ./parameter_manager_service --redis_password 1234abcd"
+echo "starting parameter manager"
+# ./parameter_manager_service --redis_password 1234abcd              & # warm
+./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
+sleep 5
+
+echo "cold loading sdbservice"
+cold_start_load_SV030.sh
+cold_start_load_O3b_F01.sh
+
+echo "cold loading parameter manager"
+load_ground_parameters_SV030.sh
+load_ground_parameters_O3b_F01.sh
 
 echo "starting tm_pub_service"
 ./tm_pub_service &
 sleep 5
 
-ehco "starting to_redis"
+echo "starting to_redis"
 ./to_redis --redis_password 1234abcd --assets SV030 &
 sleep 5
 
