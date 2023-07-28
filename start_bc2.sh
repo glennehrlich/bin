@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
+cd ~/bc2/usr/bin
+
 echo "clearing logs"
 rm -f ~/bc2/usr/log/*
 
-cd ~/bc2/usr/bin
+echo "clearing sdbservice lock file"
+rm -f ~/bc2/usr/data/sdb/xtce/.sdbservice_lock
 
 echo "starting redis servier"
 docker run --name redis --detach --tty --rm --publish 11500:11500 -v ~/bc2:/usr/data/storage bc2-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/redis-server:6.2.6-R1 /usr/data/redis.conf --dir /usr/data/storage
@@ -31,14 +34,6 @@ echo "starting parameter manager"
 ./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
 sleep 5
 
-echo "cold loading sdbservice"
-cold_start_load_SV030.sh
-cold_start_load_O3b_F01.sh
-
-echo "cold loading parameter manager"
-load_ground_parameters_SV030.sh
-load_ground_parameters_O3b_F01.sh
-
 echo "starting tm_pub_service"
 ./tm_pub_service &
 sleep 5
@@ -50,6 +45,14 @@ sleep 5
 echo "starting stream gateway"
 ./rawtcp_altair_gateway  --name streamgateway --gateway_id "deploy-test" --max_tm_framecount 4095 &
 sleep 5
+
+echo "cold loading sdbservice"
+cold_start_load_SV030.sh
+cold_start_load_O3b_F01.sh
+
+echo "cold loading parameter manager"
+load_ground_parameters_SV030.sh
+load_ground_parameters_O3b_F01.sh
 
 # ./tcservice --assets SV030 &
 # sleep 5
