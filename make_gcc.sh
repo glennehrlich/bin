@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RELEASE=13.1
+RELEASE=12.2
 VERSION=$RELEASE.0
 
 rm -rf ~/tmp/objdir
