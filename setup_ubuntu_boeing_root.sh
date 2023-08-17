@@ -153,9 +153,7 @@ banner "Install emacs"
 # ============================================================
 
 # Get some build tools.
-apt-get -y install \
-    autoconf       \
-    texinfo
+apt-get -y install autoconf texinfo
 
 # Add the ubuntu emacs snapshot ppa. This is only used to assist
 # building emacs. The -s adds the sources repository.
