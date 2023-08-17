@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RELEASE=12.2
+RELEASE=13.2
 VERSION=$RELEASE.0
 
 rm -rf ~/tmp/objdir
@@ -24,7 +24,7 @@ cd ~/tmp/objdir
 # or 
 # Use this step if using an Ubuntu variant
 # Alternate configure step:
-../gcc-$VERSION/configure --prefix=/opt/gcc-$RELEASE --enable-languages=c,c++ --disable-multilib
+../gcc-$VERSION/configure --prefix=/opt/gcc-$VERSION --enable-languages=c,c++ --disable-multilib
  
 # This step will take a couple hours
 make -j `nproc`
