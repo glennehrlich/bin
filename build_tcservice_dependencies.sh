@@ -27,15 +27,19 @@ function build_executable
 
 # Kill any services we will be building and installing.
 pkill message_distributor_proxy
+pkill parameter_manager_service
 pkill rawtcp_altair_gateway
 pkill sdbservice
+pkill tcservice
 pkill tm_pub_service
+pkill to_redis
 
 REPOS=(            \
   messaging        \
   parametermanager \
   sdbservice       \
   streamgateway    \
+  tcservice        \
   tmservice        \
 )
 
@@ -81,13 +85,14 @@ done
 # Build the services.
 build_executable messaging        message_distributor_proxy
 build_executable parametermanager parameter_manager_service
-build_executable streamgateway    rawtcp_altair_gateway
 build_executable sdbservice       sdbservice
+build_executable streamgateway    rawtcp_altair_gateway
+build_executable tcservice        tcservice
 build_executable tmservice        tm_pub_service
 build_executable tmservice        to_redis
 
 # Build some utilities.
-build_executable messaging        taipl_events
+build_executable messaging        tail_events
 build_executable messaging        view_events
 build_executable parametermanager get_parameter
 build_executable parametermanager set_parameter
@@ -96,5 +101,10 @@ build_executable sdbservice       get_assets
 build_executable sdbservice       loaddatabase
 build_executable sdbservice       tc_def
 build_executable sdbservice       tm_def
+build_executable sdbservice       validatextce
+build_executable streamgateway    quick_altair_cmd
+build_executable streamgateway    quick_boeing_sw_cmd
+build_executable streamgateway    sendrawtc
+build_executable tcservice        send_tc
 build_executable tmservice        tail_tm
 build_executable tmservice        view_tm
