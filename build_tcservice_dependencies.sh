@@ -34,8 +34,18 @@ pkill tcservice
 pkill tm_pub_service
 pkill to_redis
 
+# glenn: temp commented out
+# REPOS=(            \
+#   messaging        \
+#   parametermanager \
+#   sdbservice       \
+#   streamgateway    \
+#   tcservice        \
+#   tmservice        \
+# )
+
+# glenn: temp
 REPOS=(            \
-  messaging        \
   parametermanager \
   sdbservice       \
   streamgateway    \

@@ -24,14 +24,14 @@ sleep 5
 # ./sdbservice --no_unique_name &
 # sleep 10
 # echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
-echo "starting sdbservice"
+echo "starting sdbservice cold"
 # ./sdbservice --no_unique_name        & # warm
 ./sdbservice --no_unique_name --cold & # cold
 sleep 10
 
-echo "starting parameter manager"
+echo "starting parameter manager cold"
 # ./parameter_manager_service --redis_password 1234abcd              & # warm
-./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
+ ./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
 sleep 5
 
 echo "starting tm_pub_service"
@@ -48,13 +48,13 @@ sleep 5
 
 echo "cold loading sdbservice"
 cold_start_load_SV030.sh
-cold_start_load_O3b_F01.sh
+# cold_start_load_O3b_F01.sh
 
 # Cold loading parameter manager is no longer necessary.
 # echo "cold loading parameter manager"
 # load_ground_parameters_SV030.sh
 # load_ground_parameters_O3b_F01.sh
-echo "skipping cold loading parameter manager"
+# echo "skipping cold loading parameter manager"
 
 # ./tcservice --assets SV030 &
 # sleep 5
