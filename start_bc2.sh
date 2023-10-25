@@ -48,7 +48,7 @@ sleep 5
 
 echo "cold loading sdbservice"
 cold_start_load_SV030.sh
-# cold_start_load_O3b_F01.sh
+cold_start_load_O3b_F01.sh
 
 # Cold loading parameter manager is no longer necessary.
 # echo "cold loading parameter manager"
@@ -56,6 +56,7 @@ cold_start_load_SV030.sh
 # load_ground_parameters_O3b_F01.sh
 # echo "skipping cold loading parameter manager"
 
-# ./tcservice --assets SV030 &
+echo "starting tcservice"
+# ./tcservice &
 # sleep 5
 echo "need to manually start tcservice"

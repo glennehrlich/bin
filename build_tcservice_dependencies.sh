@@ -34,7 +34,7 @@ pkill tcservice
 pkill tm_pub_service
 pkill to_redis
 
-# glenn: temp commented out
+# glenn: normal version
 # REPOS=(            \
 #   messaging        \
 #   parametermanager \
@@ -44,13 +44,9 @@ pkill to_redis
 #   tmservice        \
 # )
 
-# glenn: temp
+# glenn: ad hoc version
 REPOS=(            \
-  parametermanager \
   sdbservice       \
-  streamgateway    \
-  tcservice        \
-  tmservice        \
 )
 
 # For each repo, make sure it's clean, checkout master, then do a pull.
