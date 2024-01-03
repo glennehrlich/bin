@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-pkill tcservice
-pkill rawtcp_altair_g
-pkill to_redis
-pkill tm_pub_service
-pkill parameter
-pkill sdbservice
-pkill message
+pkill -f tcservice
+pkill -f rawtcp_altair
+pkill -f to_redis
+pkill -f tm_pub_service
+pkill -f parameter
+pkill -f sdbservice
+pkill -f message
 docker kill redis

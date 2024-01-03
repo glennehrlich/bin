@@ -26,13 +26,17 @@ sleep 5
 # echo "need to manually start sdbservice; run: ./sdbservice --no_unique_name"
 echo "starting sdbservice cold"
 # ./sdbservice --no_unique_name        & # warm
-./sdbservice --no_unique_name --cold & # cold
+# ./sdbservice --no_unique_name --no_unsupported_encoding --cold & # cold
+# ./sdbservice --no_unique_name --no_unsupported_encoding & # warm and BogusSAT
+./sdbservice --cold --no_unique_name --no_unsupported_encoding & # cold and BogusSAT
 sleep 10
 
 echo "starting parameter manager cold"
 # ./parameter_manager_service --redis_password 1234abcd              & # warm
- ./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
+./parameter_manager_service --redis_password 1234abcd --cold_start & # cold
 sleep 5
+# echo "need to manually start tcservice:"
+# echo "./parameter_manager_service --redis_password 1234abcd"
 
 echo "starting tm_pub_service"
 ./tm_pub_service &
