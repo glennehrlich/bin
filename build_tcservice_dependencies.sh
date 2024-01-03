@@ -26,13 +26,13 @@ function build_executable
 }
 
 # Kill any services we will be building and installing.
-pkill -f message_distributor_proxy
-pkill -f parameter_manager_service
-pkill -f rawtcp_altair_gateway
-pkill -f sdbservice
-pkill -f tcservice
-pkill -f tm_pub_service
-pkill -f to_redis
+pkill message_distributor_proxy
+pkill parameter_manager_service
+pkill rawtcp_altair_gateway
+pkill sdbservice
+pkill tcservice
+pkill tm_pub_service
+pkill to_redis
 
 # glenn: normal version
 REPOS=(            \
