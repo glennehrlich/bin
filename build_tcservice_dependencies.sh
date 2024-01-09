@@ -26,16 +26,18 @@ function build_executable
 }
 
 # Kill any services we will be building and installing.
-pkill message_distributor_proxy
-pkill parameter_manager_service
-pkill rawtcp_altair_gateway
-pkill sdbservice
-pkill tcservice
-pkill tm_pub_service
-pkill to_redis
+pkill -f rawtcp_altair
+pkill -f to_redis
+pkill -f tm_pub_service
+pkill -f parameter
+pkill -f sdbservice
+pkill -f message
+docker kill redis
+docker kill etcd-server
 
 # glenn: normal version
 REPOS=(            \
+  discoveryservice \
   messaging        \
   parametermanager \
   sdbservice       \
@@ -89,6 +91,7 @@ for repo in ${REPOS[@]}; do
 done
 
 # Build the services.
+build_executable discoveryservice discovery_wrapper
 build_executable messaging        message_distributor_proxy
 build_executable parametermanager parameter_manager_service
 build_executable sdbservice       sdbservice
@@ -98,6 +101,10 @@ build_executable tmservice        tm_pub_service
 build_executable tmservice        to_redis
 
 # Build some utilities.
+build_executable discoveryservice delete_discovery_key
+build_executable discoveryservice get_discovery_key
+build_executable discoveryservice put_discovery_key
+build_executable discoveryservice view_discovery_service
 build_executable messaging        tail_events
 build_executable messaging        view_events
 build_executable parametermanager get_parameter
@@ -114,3 +121,7 @@ build_executable streamgateway    sendrawtc
 build_executable tcservice        send_tc
 build_executable tmservice        tail_tm
 build_executable tmservice        view_tm
+
+# Copy other things.
+cp ~/git/bc2/discoveryservice/src/bc2/discovery_wrapper/*.sh $BC2_RUNTREE_TOP/usr/bin
+

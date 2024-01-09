@@ -49,24 +49,4 @@ echo "starting parameter manager"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11510], "running_keys_up": [{"name":"bc2/parameter_manager_service/10.0.2.15:11510"}]}' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/parameter_manager_service --redis_password 1234abcd &
-
-echo "starting SV030 tm_pub_service"
-./discovery_wrapper \
---discovery_server 10.0.2.15:11080 \
---wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/SV030/500/10.0.2.15:11700"}]}' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/tm_pub_service &
-
-echo "starting to_redis"
-./discovery_wrapper \
---discovery_server 10.0.2.15:11080 \
---wrapper_config '{"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/SV030/10.0.2.15:1"}]}' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/to_redis --redis_password 1234abcd --assets SV030 &
-
-echo "starting stream gateway"
-./discovery_wrapper \
---discovery_server 10.0.2.15:11080 \
---wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/SV030/10.0.2.15:11550"}] }' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/rawtcp_altair_gateway  --name streamgateway --gateway_id "sv030-int-1" --rawtcp_tm_hostport 10.0.2.15:32100 --rawtcp_tc_hostport 10.0.2.15:32000 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 --link_publish_interval_seconds 600 &
-
-echo "need to manually start tcservice"
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/parameter_manager_service --redis_password 1234abcd --log_console --log_level info
