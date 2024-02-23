@@ -4,6 +4,7 @@ pkill -f tcservice
 pkill -f rawtcp_altair
 pkill -f to_redis
 pkill -f tm_pub_service
+pkill -f eventservice
 pkill -f parameter
 pkill -f sdbservice
 docker kill mss_sim_sv030

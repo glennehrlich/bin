@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# References to 10.0.2.15 might need to change. It has to reference
+# the IP address of the ethernet adaptor inside of the VM. It's
+# difficult to make shell variable substitution work with the way
+# these command lines look, so they're hardcoded.
+
 cd ~/bc2/usr/bin
 
 echo "clearing logs"
@@ -51,6 +56,13 @@ echo "starting parameter manager"
 --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11510], "running_keys_up": [{"name":"bc2/parameter_manager_service/10.0.2.15:11510"}]}' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/parameter_manager_service --redis_password 1234abcd &
 
+# space python can't send to event service; not sure if it's being set up correctly, so disabling for now
+# echo "starting event service"
+# ./discovery_wrapper \
+# --discovery_server 10.0.2.15:11080 \
+# --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/event_publisher_proxy/"}, {"name":"bc2/asset_manager/"}], "running_ports":[11530], "running_keys_up": [{"name":"bc2/eventservice/10.0.2.15:11530"}]}' \
+# /usr/bin/jemalloc.sh ~/bc2/usr/bin/eventservice &
+
 echo "starting SV030 tm_pub_service"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
@@ -63,10 +75,16 @@ echo "starting to_redis"
 --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/SV030/10.0.2.15:1"}]}' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/to_redis --redis_password 1234abcd --assets SV030 &
 
-echo "starting stream gateway"
+echo "starting stream gateway for SV030"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/SV030/10.0.2.15:11550"}] }' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/rawtcp_altair_gateway  --name streamgateway --gateway_id "sv030-int-1" --rawtcp_tm_hostport 10.0.2.15:32100 --rawtcp_tc_hostport 10.0.2.15:32000 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 --link_publish_interval_seconds 600 &
+
+echo "starting simple ack gateway for O3b_F01"
+./discovery_wrapper \
+--discovery_server 10.0.2.15:11080 \
+--wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/O3b_F01/10.0.2.15:11551"}] }' \
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/simple_ack_gateway  --gateway_id "o3b_f01-int-1" --tcassets O3b_F01 55 --tc_listen_hostport 0.0.0.0:11551 &
 
 echo "need to manually start tcservice"

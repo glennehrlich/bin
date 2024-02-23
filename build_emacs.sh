@@ -29,6 +29,7 @@ apt-get -y build-dep emacs-snapshot
 
 # Get the emacs git repo.
 cd /tmp
+rm -rf emacs
 git clone --depth 1 https://git.savannah.gnu.org/git/emacs.git
 
 # Need these to be set for the native compilation.
@@ -39,7 +40,7 @@ export CXX=/usr/bin/g++-10
 
 cd emacs
 ./autogen.sh
-./configure --prefix=/usr/local --without-compress-install --with-native-compilation --with-tree-sitter --with-json --with-mailutils
-make -j `nproc`
+./configure --prefix=/usr/local --without-compress-install --with-native-compilation=aot --with-tree-sitter --with-json --with-mailutils
+make NATIVE_FULL_AOT=1 -j `nproc`
 
 echo "test out emacs and then install with sudo make install"

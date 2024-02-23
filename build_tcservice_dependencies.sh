@@ -25,19 +25,10 @@ function build_executable
     cp bin/$executable $BC2_RUNTREE_TOP/usr/bin
 }
 
-# Kill any services we will be building and installing.
-pkill -f rawtcp_altair
-pkill -f to_redis
-pkill -f tm_pub_service
-pkill -f parameter
-pkill -f sdbservice
-pkill -f message
-docker kill redis
-docker kill etcd-server
-
 # glenn: normal version
 REPOS=(            \
   discoveryservice \
+  eventservice     \
   messaging        \
   parametermanager \
   sdbservice       \
@@ -92,10 +83,12 @@ done
 
 # Build the services.
 build_executable discoveryservice discovery_wrapper
+build_executable eventservice     eventservice
 build_executable messaging        message_distributor_proxy
 build_executable parametermanager parameter_manager_service
 build_executable sdbservice       sdbservice
 build_executable streamgateway    rawtcp_altair_gateway
+build_executable streamgateway    simple_ack_gateway
 build_executable tcservice        tcservice
 build_executable tmservice        tm_pub_service
 build_executable tmservice        to_redis
