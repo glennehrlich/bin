@@ -278,6 +278,7 @@ apt-get -y install  \
         docker.io   \
         doxygen     \
         graphviz    \
+        jsonnet     \
         python2     \
         python3-pip \
         rpm         \

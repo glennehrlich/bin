@@ -33,6 +33,7 @@ REPOS=(            \
   parametermanager \
   sdbservice       \
   streamgateway    \
+  syscontrol       \
   tcservice        \
   tmservice        \
 )
@@ -117,4 +118,5 @@ build_executable tmservice        view_tm
 
 # Copy other things.
 cp ~/git/bc2/discoveryservice/src/bc2/discovery_wrapper/*.sh $BC2_RUNTREE_TOP/usr/bin
+cp ~/git/bc2/syscontrol/add_rawtcp_gep_asset.sh $BC2_RUNTREE_TOP/usr/bin
 

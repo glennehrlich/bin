@@ -14,9 +14,12 @@ echo "clearing sdbservice lock file"
 rm -f ~/bc2/usr/data/sdb/xtce/.sdbservice_lock
 
 echo "starting etcd"
+docker pull aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:3.5.9-R4
 docker run --name etcd-server --detach --tty --rm --publish 11080:11080 \
--v ~/bc2/usr/data/etcd:/etcd-data \
-aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:3.5.9-R3 \
+-v /var/bc2/usr/data/etcd:/etcd-data \
+--entrypoint /usr/bin/delay_shutdown.bash \
+aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:3.5.9-R4 \
+60 /usr/bin/etcd \
 --name discovery1 --data-dir /etcd-data \
 --listen-client-urls http://0.0.0.0:11080 --advertise-client-urls http://0.0.0.0:11080 \
 --listen-peer-urls http://0.0.0.0:11081 --initial-advertise-peer-urls http://0.0.0.0:11081 \
@@ -25,7 +28,8 @@ aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:3.5.9-
 sleep 5
 
 echo "starting redis server"
-docker run --name redis --detach --tty --rm --publish 11500:11500 -v ~/bc2:/usr/data/storage --entrypoint /usr/bin/discovery_wrapper aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/bc2-redis/redis-server:0.1.0-DEV --discovery_server 10.0.2.15:11080 --wrapper_config '{"running_ports":[11500], "running_keys_up": [{"name":"bc2/redis/10.0.2.15:11500"}] }' redis-server /usr/data/redis.conf --dir /usr/data/storage
+docker pull aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/bc2-redis/aga_redis_server:0.5.0-DEV
+docker run --name redis --detach --tty --rm --publish 11500:11500 -v ~/bc2:/usr/data/storage --entrypoint /usr/bin/discovery_wrapper aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/bc2-redis/aga_redis_server:0.5.0-DEV --discovery_server 10.0.2.15:11080 --wrapper_config '{"running_ports":[11500], "running_keys_up": [{"name":"bc2/redis/10.0.2.15:11500"}] }' redis-server /usr/data/redis.conf --dir /usr/data/storage
 sleep 5
 
 echo "starting tc status and event proxy"
@@ -48,7 +52,7 @@ echo "starting sdbservice cold"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"before_waitfor_keys": [{"name": "bc2/event_publisher_proxy/"}], "running_ports":[11505], "running_keys_up": [{"name":"bc2/asset_manager/10.0.2.15:11505"}]}' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/sdbservice --no_unique_name --cold --no_unsupported_encoding &
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/sdbservice --no_unique_name --cold --no_unsupported_encoding --log_level debug &
 
 echo "starting parameter manager"
 ./discovery_wrapper \
@@ -66,25 +70,45 @@ echo "starting parameter manager"
 echo "starting SV030 tm_pub_service"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
---wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/SV030/500/10.0.2.15:11700"}]}' \
+--wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/SV030/50/10.0.2.15:11700"}]}' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/tm_pub_service &
 
-echo "starting to_redis"
+echo "starting to_redis for SV030"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/SV030/10.0.2.15:1"}]}' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/to_redis --redis_password 1234abcd --assets SV030 &
 
+echo "starting to_redis for O3b_F01"
+./discovery_wrapper \
+--discovery_server 10.0.2.15:11080 \
+--wrapper_config '{"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/O3b_F01/10.0.2.15:1"}]}' \
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/to_redis --redis_password 1234abcd --assets O3b_F01 &
+
 echo "starting stream gateway for SV030"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/SV030/10.0.2.15:11550"}] }' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/rawtcp_altair_gateway  --name streamgateway --gateway_id "sv030-int-1" --rawtcp_tm_hostport 10.0.2.15:32100 --rawtcp_tc_hostport 10.0.2.15:32000 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 --link_publish_interval_seconds 600 &
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/rawtcp_altair_gateway --name streamgateway --gateway_id "sv030-int-1" --tmassets SV030 30 --tcassets SV030 30 --gep mss_sim_sv030 --tc_listen_hostport 0.0.0.0:11550 --max_tm_framecount 4095 --link_publish_interval_seconds 600 --log_console
 
 echo "starting simple ack gateway for O3b_F01"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/O3b_F01/10.0.2.15:11551"}] }' \
 /usr/bin/jemalloc.sh ~/bc2/usr/bin/simple_ack_gateway  --gateway_id "o3b_f01-int-1" --tcassets O3b_F01 55 --tc_listen_hostport 0.0.0.0:11551 &
+
+# echo "starting to_mq"
+# ./discovery_wrapper \
+# --discovery_server 10.0.2.15:11080 \
+# --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--mq_broker", "name":"aga/activemq_broker/", "use_all_up": false, "split_host_port":true } ], "running_keys_up": [{"name":"bc2/tm_to_mq/10.0.2.15:1"}] }' \
+# /usr/bin/jemalloc.sh ~/bc2/usr/bin/to_mq &
+
+
+
+# echo "starting to_mq"
+# ./discovery_wrapper \
+# --discovery_server 10.0.2.15:11080 \
+# --wrapper_config {"cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--mq_broker", "name":"aga/activemq_broker/", "use_all_up": false, "split_host_port":true } ], "running_keys_up": [{"name":"bc2/tm_to_mq/10.0.2.15:1"}] } \
+# /usr/bin/jemalloc.sh ~/bc2/usr/bin/to_mq &
 
 echo "need to manually start tcservice"

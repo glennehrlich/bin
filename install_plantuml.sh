@@ -6,9 +6,7 @@ if [ "$(whoami)" != "root" ]; then
     exit 1
 fi
 
-# https://github.com/plantuml/plantuml/releases/download/v1.2023.10/plantuml-1.2023.10.jar
-
-PLANTUML_VERSION=1.2023.10
+PLANTUML_VERSION=1.2024.3
 
 cd /tmp
 rm -f plantuml*
@@ -17,3 +15,8 @@ rm -f /usr/local/bin/plantuml*
 cp plantuml*.jar /usr/local/bin
 cd /usr/local/bin
 ln -s plantuml-${PLANTUML_VERSION}.jar plantuml.jar
+
+
+
+
+
