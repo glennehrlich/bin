@@ -58,7 +58,7 @@ echo "starting parameter manager"
 ./discovery_wrapper \
 --discovery_server 10.0.2.15:11080 \
 --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11510], "running_keys_up": [{"name":"bc2/parameter_manager_service/10.0.2.15:11510"}]}' \
-/usr/bin/jemalloc.sh ~/bc2/usr/bin/parameter_manager_service --redis_password 1234abcd &
+/usr/bin/jemalloc.sh ~/bc2/usr/bin/parameter_manager_service --redis_password 1234abcd --log_level debug &
 sleep 10
 
 # space python can't send to event service; not sure if it's being set up correctly, so disabling for now
