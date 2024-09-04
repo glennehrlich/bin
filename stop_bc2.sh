@@ -12,8 +12,9 @@ pkill -f message
 
 echo "sleeping for 5 seconds to allow services to cleanly stop before stopping redis"
 sleep 5
-docker kill redis
+docker stop redis
 
 echo "sleeping for 5 seconds after stopping redis before stopping etcd-server"
 sleep 5
-docker stop -t 65 etcd-server
+docker stop etcd-server
+

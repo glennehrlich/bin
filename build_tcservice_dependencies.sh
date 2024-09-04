@@ -119,5 +119,11 @@ build_executable tmservice        tail_tm
 build_executable tmservice        view_tm
 
 # Copy other things.
-cp $BC2_REPOS_TOP/discoveryservice/src/bc2/discovery_wrapper/*.sh $BC2_RUNTREE_TOP/usr/bin
-cp $BC2_REPOS_TOP/syscontrol/add_rawtcp_gep_asset.sh $BC2_RUNTREE_TOP/usr/bin
+cp ${BC2_REPOS_TOP}/discoveryservice/src/bc2/discovery_wrapper/*.sh ${BC2_RUNTREE_TOP}/usr/bin
+cp ${BC2_REPOS_TOP}/syscontrol/add_rawtcp_gep_asset.sh ${BC2_RUNTREE_TOP}/usr/bin
+
+# Copy asset model files.
+mkdir -p ${BC2_RUNTREE_TOP}/usr/etc/asset_model/spacecraft/702DA
+mkdir -p ${BC2_RUNTREE_TOP}/usr/etc/asset_model/spacecraft/MSS
+cp ${BC2_REPOS_TOP}/sdbservice/data/asset_type_models/spacecraft/702/bc2_tcservice_702_crc.xml ${BC2_RUNTREE_TOP}/usr/etc/asset_model/spacecraft/702DA
+cp ${BC2_REPOS_TOP}/sdbservice/data/asset_type_models/spacecraft/MSS/bc2_tcservice.xml         ${BC2_RUNTREE_TOP}/usr/etc/asset_model/spacecraft/MSS
