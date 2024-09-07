@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 pkill -f tcservice
+pkill -f cortex_702da
 pkill -f rawtcp_altair
 pkill -f to_redis
 pkill -f tm_pub_service

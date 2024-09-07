@@ -82,7 +82,7 @@ for repo in ${REPOS[@]}; do
     fi
 done
 
-mkdir -p $BC2_RUNTREE_TOP=~/bc2/usr/bin
+mkdir -p $BC2_RUNTREE_TOP/usr/bin
 
 # Build the services.
 build_executable discoveryservice discovery_wrapper
@@ -90,6 +90,7 @@ build_executable eventservice     eventservice
 build_executable messaging        message_distributor_proxy
 build_executable parametermanager parameter_manager_service
 build_executable sdbservice       sdbservice
+build_executable streamgateway    cortex_702da_gateway
 build_executable streamgateway    rawtcp_altair_gateway
 build_executable streamgateway    simple_ack_gateway
 build_executable tcservice        tcservice
@@ -120,6 +121,7 @@ build_executable tmservice        view_tm
 
 # Copy other things.
 cp ${BC2_REPOS_TOP}/discoveryservice/src/bc2/discovery_wrapper/*.sh ${BC2_RUNTREE_TOP}/usr/bin
+cp ${BC2_REPOS_TOP}/syscontrol/add_cortex_gep_asset.sh ${BC2_RUNTREE_TOP}/usr/bin
 cp ${BC2_REPOS_TOP}/syscontrol/add_rawtcp_gep_asset.sh ${BC2_RUNTREE_TOP}/usr/bin
 
 # Copy asset model files.
