@@ -5,7 +5,7 @@
 # mkdir -p ~/bc2/usr
 # scp -r LAB_USER_ID@bc2-ol8-int-1.es.bss.boeing.com:/var/bc2/usr/etc ~/bc2/usr
 #
-# build_tcservice_dependencies.sh
+# build_bc2.sh
 # scp LAB_USER_ID@bc2-ol8-dev-1.es.bss.boeing.com/home1/tn725c/xtce/SV030_7.0-constraint.xml ~/bc2/usr/etc
 # scp LAB_USER_ID@bc2-ol8-dev-1.es.bss.boeing.com:/home1/tn725c/xtce/O3b_F01_3.2.xml ~/bc2/usr/etc
 
