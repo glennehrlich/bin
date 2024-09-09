@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 # Script for building minimal services and executables for testing
-# tcservice.
+# services.
+
+# This script assumes that the repos have already been cloned. It'd be
+# a nice feature addition to clone them if not present.
+#
+# You'll want to set BC2_RUNTREE_TOP to the same value as $BC2 in
+# start_bc2.sh.
 
 BC2_REPOS_TOP=~/git/bc2
 BC2_RUNTREE_TOP=~/bc2
@@ -25,7 +31,7 @@ function build_executable
     cp bin/$executable $BC2_RUNTREE_TOP/usr/bin
 }
 
-# glenn: normal version
+# Normal repos list
 REPOS=(            \
   discoveryservice \
   eventservice     \
@@ -38,7 +44,11 @@ REPOS=(            \
   tmservice        \
 )
 
-# glenn: ad hoc version
+# If you only want to build a subset, you can set REPOS with only the
+# repos you want. You don't want to comment out individual lines, as
+# that will be invalid bash syntax, make a copy and delete the repos
+# you don't want.
+#
 # REPOS=(            \
 #   sdbservice       \
 # )
