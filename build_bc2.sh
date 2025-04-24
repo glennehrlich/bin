@@ -112,6 +112,7 @@ build_executable discoveryservice delete_discovery_key
 build_executable discoveryservice get_discovery_key
 build_executable discoveryservice put_discovery_key
 build_executable discoveryservice view_discovery_service
+build_executable messaging        send_event
 build_executable messaging        tail_events
 build_executable messaging        view_events
 build_executable parametermanager get_parameter

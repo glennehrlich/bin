@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
 # ============================================================
+# CHANGE LOG
+#
+# 2025-01-25: brought up in line with https://confluence-sdteob.web.boeing.com/display/BC2/Running+services+for+dev+testing, v.171, 2025-01-21:
+#  - added additional shutdown_grace_seconds
+#  - removed all references to running O3b_F01; local VM should never
+#    directly connect to O3b_F01 sim because it only allows a single
+#    connection; if a local VM wants to do O3b_F01 testing, it needs a
+#    custom setup with modified etc configuration files to point to
+#    the int-1 O3b_F01 stream gateway, which is beyond the scope of
+#    this script
+# ============================================================
+
+# ============================================================
 # Some environment variables you might want to change:
 # ============================================================
 
@@ -9,7 +22,6 @@ BC2=~/bc2
 
 # These are for setting up various assets.
 SETUP_SV030=true
-SETUP_O3b_F01=true
 
 # This is the version of the etcd docker container that is retrieved
 # from artifactory. The right version to use can be found on
@@ -19,18 +31,13 @@ ETCD_VERSION=3.5.9-R6
 # This is the version of redis docker container that is retrieved from
 # artifactory. The right version to use can be found on
 # https://confluence-sdteob.web.boeing.com/display/BC2/Running+services+for+dev+testing.
-REDIS_VERSION=0.8.0-DEV
+REDIS_VERSION=0.10.0-DEV
 
 # The ip address of your local vm. Normally the first variant
 # automatically retrieves it with the hostname, but if that does not
 # work, then uncomment the 2nd form and put in the correct value.
 IP=$(hostname -I | awk '{print $1}')
 # IP_ADDRESS=10.0.2.15
-
-# These are the settings for the O3b_F01 sim that int-1 uses.
-GSS_O3b_F01_SIM_HOSTNAME=gssl0.es.bss.boeing.com
-GSS_O3b_F01_SIM_PORT_TM=3072
-GSS_O3b_F01_SIM_PORT_TC=3022
 
 # Set this whether you like sdbservice starting cold or warm.
 # It is recommended to start sdbservice cold.
@@ -59,16 +66,9 @@ echo 'ENVIRONMENT VARS'
 echo
 echo "BC2=${BC2}"
 echo "SETUP_SV030=${SETUP_SV030}"
-echo "SETUP_O3b_F01=${SETUP_O3b_F01}"
 echo "ETCD_VERSION=${ETCD_VERSION}"
 echo "REDIS_VERSION=${REDIS_VERSION}"
 echo "IP=${IP}"
-
-if [[ "${SETUP_O3b_F01}" == "true" ]]; then
-    echo "GSS_O3b_F01_SIM_HOSTNAME=${GSS_O3b_F01_SIM_HOSTNAME}"
-    echo "GSS_O3b_F01_SIM_PORT_TM=${GSS_O3b_F01_SIM_PORT_TM}"
-    echo "GSS_O3b_F01_SIM_PORT_TC=${GSS_O3b_F01_SIM_PORT_TC}"
-fi
 
 echo "SDBSERVICE_START_COLD=${SDBSERVICE_START_COLD}"
 echo "CLEAR_REDIS_KEYS=${CLEAR_REDIS_KEYS}"
@@ -169,10 +169,10 @@ function start_etcd {
            --name etcd-server \
            --detach --tty --rm --publish 11080:11080 \
            --entrypoint \
-           /usr/bin/delay_shutdown.bash \
-           aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:${ETCD_VERSION} \
-           30 \
-           /usr/bin/etcd \
+             /usr/bin/delay_shutdown.bash \
+             aga-docker-sandbox-sdte.artifactory-sdteob.web.boeing.com/bc2/etcd-server:${ETCD_VERSION} \
+             30 \
+             /usr/bin/etcd \
            --name discovery1 \
            --data-dir /etcd-data \
            --listen-client-urls http://0.0.0.0:11080 \
@@ -237,12 +237,12 @@ function start_tc_status_and_event_proxy {
 
     ${BC2}/usr/bin/discovery_wrapper \
           --wrapper_config \
-          '{"running_keys_down": [{"name":"bc2/event_publisher_proxy/500/'"${IP}"':11600"}, {"name":"bc2/event_distributor_proxy/500/'"${IP}"':11601"}] }' \
+          '{"shutdown_grace_seconds": 60, "running_keys_down": [{"name":"bc2/event_publisher_proxy/500/'"${IP}"':11600"}, {"name":"bc2/event_distributor_proxy/500/'"${IP}"':11601"}] }' \
           ${BC2}/usr/bin/message_distributor_proxy \
           --discovery_server ${IP}:11080 \
           --upstream_port 11600 \
           --downstream_port 11601 \
-          -q 500 \
+          -q 0 \
           --event &
 }
 
@@ -255,12 +255,12 @@ function start_tm_proxy {
 
     ${BC2}/usr/bin/discovery_wrapper \
           --wrapper_config \
-          '{"running_keys_down": [{"name":"bc2/parameter_publisher_proxy/500/'"${IP}"':11620"}, {"name":"bc2/telemetry_distributor_proxy/500/'"${IP}"':11621"}] }' \
+          '{"shutdown_grace_seconds": 60, "running_keys_down": [{"name":"bc2/parameter_publisher_proxy/500/'"${IP}"':11620"}, {"name":"bc2/telemetry_distributor_proxy/500/'"${IP}"':11621"}] }' \
           ${BC2}/usr/bin/message_distributor_proxy \
           --discovery_server ${IP}:11080 \
           --upstream_port 11620 \
           --downstream_port 11621 \
-          -q 500 &
+          -q 0 &
 
     sleep 5
 }
@@ -307,7 +307,7 @@ function start_parameter_manager {
 
     ${BC2}/usr/bin/discovery_wrapper \
           --discovery_server ${IP}:11080 \
-          --wrapper_config '{"cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11510], "running_keys_up": [{"name":"bc2/parameter_manager_service/'"${IP}"':11510"}]}' \
+          --wrapper_config '{"shutdown_grace_seconds": 30, "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11510], "running_keys_up": [{"name":"bc2/parameter_manager_service/'"${IP}"':11510"}]}' \
           /usr/bin/jemalloc.sh ${BC2}/usr/bin/parameter_manager_service --redis_password 1234abcd &
 
     sleep 5
@@ -323,7 +323,7 @@ function start_tcservice {
     ${BC2}/usr/bin/discovery_wrapper \
           --discovery_server ${IP}:11080 \
           --wrapper_config '{"shutdown_grace_seconds": 60, "before_waitfor_keys": [{"name": "bc2/event_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--parameter_manager", "name":"bc2/parameter_manager_service/", "use_all_up": false, "split_host_port":true}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true} ], "running_ports":[11520], "running_keys_up": [{"name":"bc2/tcservice/'"${IP}"':11520"}]}' \
-          /usr/bin/jemalloc.sh ${BC2}/usr/bin/tcservice &
+          /usr/bin/jemalloc.sh ${BC2}/usr/bin/tcservice --log_level debug &
 
     sleep 5
 }
@@ -376,7 +376,7 @@ function start_SV030 {
 
     ${BC2}/usr/bin/discovery_wrapper \
           --discovery_server ${IP}:11080 \
-          --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/SV030/50/'"${IP}"':11700"}]}' \
+          --wrapper_config '{"shutdown_grace_seconds": 30, "before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/SV030/50/'"${IP}"':11700"}]}' \
           /usr/bin/jemalloc.sh ${BC2}/usr/bin/tm_pub_service &
 
     sleep 5
@@ -398,94 +398,26 @@ function start_SV030 {
     echo "starting stream gateway for SV030"
     echo
 
-    test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint.xml
+    # test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint.xml
+    # test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint-significance.xml
+    # test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint-mostly-no-significance.xml
+    # test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint-mostly-no-significance_context_calibrator.xml
+    test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint-mostly-no-significance_context_calibrator2.xml
+    # test_and_load_database SV030 spacecraft MSS SV030_7.0-constraint-mostly-no-significance_context_calibrator_multipart.xml
 
     ${BC2}/usr/bin/discovery_wrapper \
           --discovery_server ${IP}:11080 \
-          --wrapper_config '{"before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/SV030/'"${IP}"':11550"}] }' \
+          --wrapper_config '{"shutdown_grace_seconds": 30, "before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/SV030/'"${IP}"':11550"}] }' \
           /usr/bin/jemalloc.sh ${BC2}/usr/bin/rawtcp_altair_gateway \
           --name streamgateway \
           --gateway_id "sv030-int-1" \
+          --ground_tm_cadu_asm \
+          --ground_tc_ccsds_cltu \
           --tmassets SV030 30 \
           --tcassets SV030 30 \
           --gep mss_sim_sv030 \
           --tc_listen_hostport 0.0.0.0:11550 \
-          --max_tm_framecount 4095 \
-          --link_publish_interval_seconds 600 &
-
-    echo
-}
-
-
-function start_O3b_F01 {
-    echo '------------------------------------------------------------'
-    echo
-    echo "starting O3b_F01"
-    echo
-
-    echo '------------------------------------------------------------'
-    echo
-    echo "starting to_redis for cortex-int-1 (O3b_F01 stream gateway)"
-    echo
-
-    ${BC2}/usr/bin/discovery_wrapper \
-          --discovery_server ${IP}:11080 \
-          --wrapper_config '{"shutdown_grace_seconds": 30, "cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/cortex-int-1/'"${IP}"':1"}]}' \
-          /usr/bin/jemalloc.sh ${BC2}/usr/bin/to_redis --redis_password 1234abcd --assets cortex-int-1 &
-
-    echo '------------------------------------------------------------'
-    echo
-    echo "starting tm publisher for O3b_F01"
-    echo
-
-    echo "doing setup"
-    echo
-
-    ${BC2}/usr/bin/add_cortex_gep_asset.sh cortex_sim_O3b_F01 ${GSS_O3b_F01_SIM_HOSTNAME} ${GSS_O3b_F01_SIM_PORT_TM} ${GSS_O3b_F01_SIM_PORT_TC}
-    ${BC2}/usr/bin/set_parameter -a cortex_sim_O3b_F01 -p bc2_prop_tm_max_ground_frame -v 612
-    ${BC2}/usr/bin/add_assets -a cortex-int-1 -c service -t streamgateway
-
-    echo
-    echo "starting up tm publisher"
-    echo
-
-    ${BC2}/usr/bin/discovery_wrapper \
-          --discovery_server ${IP}:11080 \
-          --wrapper_config '{"shutdown_grace_seconds": 30, "before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_pub_service/O3b_F01/50/'"${IP}"':11710"}]}' \
-          /usr/bin/jemalloc.sh ${BC2}/usr/bin/tm_pub_service -n tm_pub_service702 &
-
-    sleep 5
-
-    echo '------------------------------------------------------------'
-    echo
-    echo "starting to_redis for O3b_F01"
-    echo
-
-    ${BC2}/usr/bin/discovery_wrapper \
-          --discovery_server ${IP}:11080 \
-          --wrapper_config '{"shutdown_grace_seconds": 30, "cmd_line_name_keys": [{"parameter":"--tlmsource", "name":"bc2/telemetry_distributor_proxy/"}, {"parameter":"--redis", "name":"bc2/redis/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/tm_to_redis/O3b_F01/'"${IP}"':1"}]}' \
-          /usr/bin/jemalloc.sh ${BC2}/usr/bin/to_redis --redis_password 1234abcd --assets O3b_F01 &
-
-    sleep 5
-
-    echo '------------------------------------------------------------'
-    echo
-    echo "starting stream gateway for O3b_F01"
-    echo
-
-    test_and_load_database O3b_F01 spacecraft 702DA O3b_F01_3.2.xml
-
-    ${BC2}/usr/bin/discovery_wrapper \
-          --discovery_server ${IP}:11080 \
-          --wrapper_config '{"shutdown_grace_seconds": 30, "before_waitfor_keys": [{"name":"bc2/parameter_publisher_proxy/"}], "cmd_line_name_keys": [{"parameter":"--evtsource", "name":"bc2/event_distributor_proxy/"}, {"parameter":"--sdbservice", "name":"bc2/asset_manager/", "use_all_up": false, "split_host_port":true}], "running_keys_up": [{"name":"bc2/stream_gateway/O3b_F01/'"${IP}"':11551"}] }' \
-          /usr/bin/jemalloc.sh ${BC2}/usr/bin/cortex_702da_gateway \
-          --name streamgateway702 \
-          --gateway_id cortex-int-1 \
-          --tmassets O3b_F01 55 \
-          --tcassets O3b_F01 55 \
-          --gep cortex_sim_O3b_F01 \
-          --tc_listen_hostport 0.0.0.0:11551 \
-          --link_publish_interval_seconds 600 &
+          --max_tm_framecount 4095 &
 
     echo
 }
@@ -509,14 +441,14 @@ start_sdbservice
 
 start_parameter_manager
 
-start_tcservice
-
 if [[ "${SETUP_SV030}" == "true" ]]; then
     start_SV030
 fi
 
-if [[ "${SETUP_O3b_F01}" == "true" ]]; then
-    start_O3b_F01
-fi
+# echo '------------------------------------------------------------'
+# echo
+# echo "manually start tcservice"
+# echo
+start_tcservice
 
 exit 0
